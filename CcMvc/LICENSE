@@ -1,0 +1,45 @@
+Copyright © 2015-2016 por Enyerber Franco 
+
+El Framework CcMvc es software libre: usted puede redistribuirlo y / o modificarlo
+bajo los términos de la General Public License, de GNU según lo publicado por
+la Free Software Foundation, bien de la versión 3 de la Licencia, o
+cualquier versión posterior.
+
+La redistribucion y uso de el codigo fuente, con o sin modificacion,
+se permiten con el cumplimiento de las siguientes 
+condiciones:
+* Las redistribuciones del codigo fuente deven tener el aviso de copyright anterior,
+  en la lista de condiciones y los siguientes avisos legales en la documentacion y/o 
+  en otros materiales provistos en la distribucion
+* Ni el nombre CcMvc framework  ni el nombre de sus colaboradores pueden usarse para promocionar 
+  productos derivados de este software sin  previos permiso especificos por escrito.
+
+ESTE SOFTWARE ES PROPORCIONADO POR EL PROPIETARIO DEL COPYRIGHT Y COLABORADORES 
+"TAL COMO ESTÁ" SIN GARANTIA EXPRESA O IMPLÍCITAS DE CUALQUIER TIPO, INCLUYENDO, PERO NO LIMITADO A,
+LAS GARANTÍAS IMPLÍCITAS DE COMERCIABILIDAD E IDONEIDAD PARA UN PROPÓSITO. 
+EN NINGÚN CASO LOS DERECHOS DE AUTOR DEL PROPIETARIO O COLABORADORES SERÁN RESPONSABLES DE DAÑOS DIRECTOS,
+INDIRECTOS, INCIDENTALES, ESPECIAL, EJEMPLARES O CONSECUENTES( INCLUYENDO,
+PERO NO LIMITADO A,ADQUISISION Y SUSTITUCIÓN DE BIENES Y SERVICIOS; 
+PÉRDIDA DE USO, DE DATOS, O BENEFICIOS O INTERRUPCIÓN DEL NEGOCIO) CAUSADOS COMO FUERE EN CUALQUIER TEORÍA DE RESPONSABILIDAD
+CONTRACTUAL, RESPONSABILIDAD ESTRICTA O RESPONSABILIDAD CIVIL( INCLUYENDO NEGLIGENCIA O CUALQUIER OTRA FORMA) 
+QUE SURJAN DE NINGUNA MANERA DEL USO DE ESTE SOFTWARE, AUNQUE INFORMADOS DE LA POSIBILIDAD DE TALES DAÑOS.
+
+
+ certificado de origen  del desarrollador  1.0 
+ haciendo una contribución a este proyecto, Certifico que:
+
+(a) La contribución se ha creado en su totalidad o en parte por mí (Enyerber Franco) y tengo el derecho a
+     presentar los términos de la licencia de código abierto que se indica en el archivo, o
+
+(b) La contribución se basa en previos trabajos que e desarrolado, con lo mejor de mis conocimientos, es cubierto
+     por una adecuada licencia de código abierto y tengo el derecho que la licencia sostienen para  trabajar
+     con modificaciones, ya sea creado en su totalidad o en parte por mí, en las mismas  licencia de código abierto
+     (a menos que me permite presentar en una licencia diferente), como se indica en el archivo,
+
+(c) Entiendo y de acuerdo que este proyecto y la contribución son públicas y que un registro de 
+     la contribución( incluidos todos los datos personales que presento con él, incluyendo mi signo-off)
+     se mantiene indefinidamente y puede ser redistribuido en consonancia con este proyecto o la  licencia(s) de
+     código abierto en cuestión
+
+Debería haber recibido una copia de la General Public License de GNU
+ junto con este framework. Si no es así, consulte <http://www.gnu.org/licenses/>

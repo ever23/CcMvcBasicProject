@@ -1,0 +1,78 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 05/08/2016, 12:34:04 PM
+    Author     : usuario
+*/
+
+.container
+{
+    width:auto;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: rgb(100, 100, 100);
+    font-weight: 600;
+    line-height: 1.3em;
+    font-style: normal;
+    margin-bottom: 15px;
+}
+body, h1, h2, h3, h4, h5, h6, label, input, button, select, textarea, input[type="text"] {
+    font-family: 'Raleway', Arial, Helvetica, sans-serif;
+}
+html
+{
+    background: rgb(155, 154, 154);
+}
+body {
+    font-size: 14px;
+    color: rgb(118, 118, 118);
+    font-weight: 400;
+    line-height: 1.6em;
+    max-width:960px;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 2px;
+    box-shadow: 2px 1px 15px 1px;
+    border-radius: 6px;
+
+
+
+
+}
+header
+{
+    height: 110px;
+}
+.main_conten
+{
+   	min-height:400px; 
+}
+.container
+{
+    padding-right: 25px;
+}
+.form-control input {
+    border-radius:5px;
+    height:30px;
+    width:300px;
+}
+
+.form-control ul li
+{
+    margin: 10px;
+}
+.form-control form {
+    width: 450px;
+    margin-right: auto;
+    margin-left: auto;
+    height: auto;
+}
+.form-control label { min-width: 68px; }
+
+
+.FormRow {
+    list-style:none; }
+.form-control .FormRow  { margin-top: 15px; }
