@@ -27,7 +27,7 @@ namespace Cc;
  * @package Cc
  * @subpackage Cache
  */
-class CacheFilePHP extends AbstracCache
+class MemCached extends AbstracCache
 {
 
     public $VersionCache = '1.0.0.5';

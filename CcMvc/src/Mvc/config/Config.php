@@ -67,6 +67,7 @@ namespace Cc\Mvc;
  * @property-read array $Router  CONFIGURACION DEL ENRUTADO  
  * <br><pre><code>
  * array(
+ * 'AutomaticRoute'=>boll       // Indica si el enrutamiento automatico esta activado
  * 'protocol'=>string           // PROTOCOLO EN EL QUE SE EJECUTARA LA APLICACION HAY DOS POSIBILIDADES http o https
  * 'GetControllerFormat'=>int   // modo en el que CcMvc enrutara las peticiones de controladores hay dos posibilidades  Router::Path o Router::Get
  *                                   
@@ -149,31 +150,65 @@ namespace Cc\Mvc;
  * 'keywords'=>array    // palabras clave
  * );
  *  </code></pre>
+ *  </code></pre>
+ * @property-read array $ViewLoaders Configuraciones para los views y layauts en general   <br><pre><code>
+ * array(
+ * 'Default'=>array    //indica el loader por defecto
+ * 'Loaders'=>array    // loaders
+ * );
+ *  </code></pre>
  */
 class Config extends \Cc\Config
 {
 
     public function LoadConfig($name, $config_name)
     {
-        if (!isset($this->config[$name]))
-        {
-            $this->config[$name] = [];
-        }
-        $File = new \SplFileInfo(realpath($config_name));
 
-        if (!$File->isFile())
+        if (is_array($config_name))
         {
-            throw new Exception("el archivo de configuracion " . realpath($config_name) . " no existe");
-        }
-        if ($File->getExtension() == 'ini')
-        {
-            $conf = $this->LoadIni($config_name, true);
+            $conf = $config_name;
         } else
         {
+            $File = new \SplFileInfo(realpath($config_name));
 
-            $conf = include($config_name);
+            if (!$File->isFile())
+            {
+                throw new Exception("el archivo de configuracion " . realpath($config_name) . " no existe");
+            }
+            if ($File->getExtension() == 'ini')
+            {
+                $conf = $this->LoadIni($config_name, true);
+            } else
+            {
+
+                $conf = include($config_name);
+            }
         }
-        $this->LoadConf($this->config[$name], $conf);
+
+        $config = $this->EvalueateIndice($name, $this->config);
+
+
+        $this->LoadConf($config, $conf);
+    }
+
+    private function &EvalueateIndice($name, &$array)
+    {
+        $ind = explode('.', $name);
+        if (count($ind) > 1)
+        {
+            $id0 = $ind[0];
+            unset($ind[0]);
+            if (!isset($array[$id0]))
+            {
+                $array[$id0] = [];
+            }
+            return $this->EvalueateIndice(implode('.', $ind), $array[$id0]);
+        }
+        if (!isset($array[$name]))
+        {
+            $array[$name] = [];
+        }
+        return $array[$name];
     }
 
     public function Load($config_name)

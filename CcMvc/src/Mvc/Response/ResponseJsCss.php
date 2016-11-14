@@ -74,14 +74,14 @@ class ResponseJsCss extends Response
         $f = dirname(Mvc::App()->GetExecutedFile()) . DIRECTORY_SEPARATOR;
         if (!is_dir($cache))
             mkdir($cache);
-        $name = preg_replace("/^(" . preg_quote($f) . ")/i", "", $file->__toString());
+        $name = preg_replace("/^(" . preg_quote($f,'/') . ")/i", "", $file->__toString());
 
         $name = str_replace(DIRECTORY_SEPARATOR, '.', $name);
 
 
         $this->fileCache = new \SplFileInfo($cache . $name);
         $cache = [];
-
+//return Mvc::App()->GetExecutedFile();
         $cache['type'] = 'file';
         $cache['Controller'] = $file->__toString();
         $cache['RealFile'] = $this->fileCache->__toString();

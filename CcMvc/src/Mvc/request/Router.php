@@ -438,7 +438,7 @@ class Router extends \Cc\Router
         {
             if ($j % 2 != 0)
             {
-                $explo = preg_quote($sp[0]) . '|';
+                $explo = preg_quote($sp[0],'/') . '|';
             }
         }
         if ($explo == '')
@@ -459,16 +459,16 @@ class Router extends \Cc\Router
             if ($j % 2 == 0)
             {
 
-                $name = substr($sp[0], 1, -1);
-                //  var_dump('/' . $mathvar[$sp[0]] . '/i', $Pexplo[$z]);
-                if (isset($mathvar[$name]) && !preg_match('/' . $mathvar[$sp[0]] . '/i', $Pexplo[$z]))
+                $name = preg_replace('/\{|\}/','',$sp[0]);
+                 //var_dump($mathvar[$name]);
+                if (isset($mathvar[$name]) && !preg_match('/' . $mathvar[$name] . '/i', $Pexplo[$z]))
                 {
                     return false;
                 }
                 $param[$name] = $Pexplo[$z];
                 if (is_string($c) && preg_match('/(\{' . $name . '\})/', $c))
                 {
-                    $m = '/' . preg_quote($sp[0]) . '/';
+                    $m = '/' . preg_quote($sp[0],'/') . '/';
 
                     $replace[$m] = $Pexplo[$z];
                 }

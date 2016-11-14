@@ -10,6 +10,9 @@ namespace Cc\Mvc;
 
 use Cc\UrlManager;
 
+/**
+ * 
+ */
 class JsonLD extends \Cc\Json
 {
 

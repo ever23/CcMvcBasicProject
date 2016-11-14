@@ -293,7 +293,7 @@ class GDResponse implements ResponseConten
     {
         $name = 'w' . ((int) $w) . 'h' . ((int) $h) . 'c' . $c;
         //$name .= str_replace(, "", );
-        $name .= preg_replace("/^(" . preg_quote(dirname(Mvc::App()->GetExecutedFile()) . DIRECTORY_SEPARATOR) . ")/i", "", Mvc::App()->Router->InfoFile->__toString());
+        $name .= preg_replace("/^(" . preg_quote(dirname(Mvc::App()->GetExecutedFile()) . DIRECTORY_SEPARATOR,'/') . ")/i", "", Mvc::App()->Router->InfoFile->__toString());
         $name = str_replace(DIRECTORY_SEPARATOR, '.', $name);
 
         //$name = Mvc::App()->Router->InfoFile->getBasename(Mvc::App()->Router->InfoFile->getExtension());

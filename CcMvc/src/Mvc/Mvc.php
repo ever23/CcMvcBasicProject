@@ -18,7 +18,6 @@ use Cc\Mvc\Controllers;
 use Cc\Mvc\ViewController;
 use Cc\Mvc\Request;
 use Cc\Mvc\ResponseConten;
-use Cc\Mvc\Server;
 use Cc\Mvc\SelectorControllers;
 use Cc\Mvc\Router;
 use Cc\Mvc\SQLi;
@@ -768,7 +767,7 @@ class Mvc
                     if (file_exists($realfile) && $file->getMTime() <= $realfile->getMTime())
                     {
                         $this->Log("Enrutado a  " . $realfile . " desde el cache");
-                        //$this->Router->InfoFile = $realfile;
+                        $this->Router->InfoFile = $realfile;
                         $this->ProcessConten = false;
                         $this->Buffer->SetAutoMin(false);
                         if ($this->Response instanceof Mvc\Response)
