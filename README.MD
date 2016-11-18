@@ -21,49 +21,49 @@ el archivo [testdb.sql](https://github.com/ever23/CcMvcProject/protected/Mysql.p
 
 En este proyecto se explica:
 
-    Enritamiento automatico y manual de controladores 
+Enritamiento automatico y manual de controladores 
 
-    Minifi automatico de javascript, styles y html
+Minifi automatico de javascript, styles y html
 
-    Uso de DomPdf para crea pdf automaticamente 
+Uso de DomPdf para crea pdf automaticamente 
 
-    Redimencionamiento de imagenes desde el servidor
+Redimencionamiento de imagenes desde el servidor
 
-    Uso basico de Formularios con  [Cc\Mvc\FormModel](https://github.com/ever23/CcMvc/src/mvc/model/FormModel/FormModel.php "CcMvc") 
+Uso basico de Formularios con  [Cc\Mvc\FormModel](https://github.com/ever23/CcMvc/src/mvc/model/FormModel/FormModel.php "CcMvc") 
 
-    Uso basico de Bases de datos con [Cc\Mvc\DBtabla](https://github.com/ever23/CcMvc/src/Mvc/DataBase/DataBase.php "CcMvc")
+Uso basico de Bases de datos con [Cc\Mvc\DBtabla](https://github.com/ever23/CcMvc/src/Mvc/DataBase/DataBase.php "CcMvc")
     
-    Uso basico de Inyeccion de Dependencias 
+Uso basico de Inyeccion de Dependencias 
 
 mas adelante se segiran incorporando mas ejemplos del funcionamiento de este famework al proyecto como los siguientes:
 
-    Sessiones y Autenticacion de usuarios con [Cc\Mvc\AutenticateUserDB](https://github.com/ever23/CcMvc/src/mvc/session/AutenticateUserDB.php "CcMvc")
+Sessiones y Autenticacion de usuarios con [Cc\Mvc\AutenticateUserDB](https://github.com/ever23/CcMvc/src/mvc/session/AutenticateUserDB.php "CcMvc")
    
-    Uso completo de Bases De datos con [Cc\DBtabla](https://github.com/ever23/CcMvc/src/Cc/DataBase/DBtabla.php "CcMvc") y [Cc\Mvc\DBtabla](https://github.com/ever23/CcMvc/src/Mvc/DataBase/DataBase.php "CcMvc") (CcMvc Actualmente soporta SQLite, MyQli y PosgreSQL)
+Uso completo de Bases De datos con [Cc\DBtabla](https://github.com/ever23/CcMvc/src/Cc/DataBase/DBtabla.php "CcMvc") y [Cc\Mvc\DBtabla](https://github.com/ever23/CcMvc/src/Mvc/DataBase/DataBase.php "CcMvc") (CcMvc Actualmente soporta SQLite, MyQli y PosgreSQL)
     
-    Crear directorios dinamicos 
+Crear directorios dinamicos 
     
-    Recibir Archivos Desde un formulario con [Cc\Mvc\PostFiles](https://github.com/ever23/CcMvc/src/mvc/request/PostFiles.php "CcMvc") y, o [Cc\Mvc\FormModel](https://github.com/ever23/CcMvc/src/mvc/model/FormModel/FormModel.php "CcMvc") 
+Recibir Archivos Desde un formulario con [Cc\Mvc\PostFiles](https://github.com/ever23/CcMvc/src/mvc/request/PostFiles.php "CcMvc") y, o [Cc\Mvc\FormModel](https://github.com/ever23/CcMvc/src/mvc/model/FormModel/FormModel.php "CcMvc") 
     
-    Ajax con CcMvc 
+Ajax con CcMvc 
     
-    Almacenar cache de imagenes dinamicas 
+ Almacenar cache de imagenes dinamicas 
     
-    Enviar Html via Email usando Views y plantillas 
+Enviar Html via Email usando Views y plantillas 
     
-    Como Protegerse de ataque Xss y Sqli con CcMvc 
+Como Protegerse de ataque Xss y Sqli con CcMvc 
 
-    Crear dependencias Inyectables 
+Crear dependencias Inyectables 
     
-    Extender CcMvc 
+Extender CcMvc 
 
-    Entre otras caracteristicas que aun falta mostrar en este proyecto base... 
+Entre otras caracteristicas que aun falta mostrar en este proyecto base... 
 
 
-## Como Instalara 
+## Como Instalar 
 
 Solo tienes que descargar el proyecto o hacer un clone desde github y colocarlo en un directorio de tu servidor local luego ejecutar con tu navegador 
 preferido 
 
 ### TE INVITO A PROBAR EL FRAMEWORK Y SI ES POSIBLE COLABORRAR CON EL DESARROLLO DEL MISMO Y ASI HACER CRECER ESTE PROYECTO 
-Puedes enviarme sugenerncias y recomendacione a enyerverfranco@gmail.com 
+Puedes enviarme sugenerncias y recomendaciones a enyerverfranco@gmail.com 
