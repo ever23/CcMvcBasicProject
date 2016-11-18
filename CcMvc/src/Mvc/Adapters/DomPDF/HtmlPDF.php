@@ -37,13 +37,13 @@ class HtmlPDF extends Html
 {
 
     /**
-     *
+     * instancia de \Dompdf\Dompdf 
      * @var \Dompdf\Dompdf 
      */
     protected $domPdf;
 
     /**
-     *
+     * encodig
      * @var string 
      */
     protected $encoding = 'utf-8';
@@ -97,6 +97,10 @@ class HtmlPDF extends Html
 
     protected $size;
 
+    /**
+     * @access private
+     * @return self
+     */
     public static function CtorParam()
     {
         Mvc::App()->ChangeResponseConten('application/pdf');

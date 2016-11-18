@@ -15,8 +15,6 @@ class SESSION extends \Cc\SESSION
 
     public function __construct()
     {
-
-
         \session_set_save_handler($this, true);
     }
 

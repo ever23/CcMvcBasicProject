@@ -131,8 +131,18 @@ class Request implements \ArrayAccess, \Countable, \IteratorAggregate
 
     public function url()
     {
-        $url = UrlManager::BuildUrl($this->Protocolo(), $this->Host(), Mvc::APP()->Config()->Router['DocumentRoot'], Mvc::App()->Router->GetPath());
+        $url = UrlManager::BuildUrl($this->Protocolo(), $this->Host(), Mvc::App()->Config()->Router['DocumentRoot'], Mvc::App()->Router->GetPath());
         return UrlManager::Href($url, $this->OrigGET);
+    }
+
+    public function Uri()
+    {
+        return $this->uri;
+    }
+
+    public function Refere()
+    {
+        return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
     }
 
     public function Host()

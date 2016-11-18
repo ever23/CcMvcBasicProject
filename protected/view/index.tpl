@@ -4,7 +4,7 @@
             {/if}
     </h1>
     <p>
-        Este es un ejempo basico de algunas de las caracteristicas de CcMvc 
+        Este es un ejempo basico de algunas de las caracteristicas de CcMvc, generado con en motor de plantillas <b>Smarty</b>
     </p>
 
     <p>
@@ -53,7 +53,7 @@
             </h3>
             <div class="form-control" style="height: auto;">
                 {basicForm->Form}
-                <ul class="list-unstyled">
+                <ul >
                     <li>
                         <label>Input </label>
                         {basicForm->Input name="unInput"}

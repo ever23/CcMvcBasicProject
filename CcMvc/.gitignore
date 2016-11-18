@@ -2,5 +2,9 @@ DocumentorHtml.ini
 docHtml.bat
 CcMvc.zip
 
-/docHtml/
+./docHtml
+./examples
+/documentacion/
 /examples/
+/documentorcache/
+/libs/*

@@ -47,44 +47,4 @@
  * Debería haber recibido una copia de la General Public License de GNU
  * junto con este framework. Si no es así, consulte <http://www.gnu.org/licenses/>
  */
-if (!version_compare(PHP_VERSION, '5.6', '>='))
-{
-    trigger_error("CcWs no es compatible con php " . PHP_VERSION . " porfavor use php 5.6 o mayor", E_USER_ERROR);
-    exit;
-}
-include_once 'src/Ws/Ws.php';
-
-/**
- * CcWS : Cover Code Web Socket                                                         
- * Servidor WebSocket                     
- * <code>
- * <?php
- * $dir=  dirname(__FILE__);
- * include $dir.'/../CcMvc/CcWS.php';
- * CcWS::Start($dir.'/config/configuracion.php')->Run();
- * ?>
- * </code>                                                                             
- * @version 0.5.4.1                                                        
- * @fecha:  2016-04-28                                                         
- * @autor ENYREBER FRANCO <enyerverfranco@gmail.com> , <enyerverfranco@outlook.com>                                                       
- * @copyright © 2016, Enyerber Franco 
- * @license http://opensource.org/licenses/gpl-license.php GNU  GENERAL PUBLIC LICENSE 
- * @package CcWs
- * 
- * @example ../examples/WebSocket/WebSocket/config/configuracion.php EJEMPLO DEL ARCHIVO DE CONFIGURACION DEL SERVIDOR
- * @link http://ccmvc.890m.com/websocket SITIO WEB
- */
-class CcWS extends Cc\Ws
-{
-
-    /**
-     * CREA UNA ISNTANCIA DEL SERVIDOR
-     * @param string $conf EL NOMBRE DEL ARCHIVO DE CONFIGURACION CON EL QUE SE INICIARA LA APLICACION  
-     * @return this
-     */
-    public static function Start($conf = NULL)
-    {
-        return new static($conf);
-    }
-
-}
+include_once 'CcWs/Ws.php';

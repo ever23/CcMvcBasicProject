@@ -20,7 +20,7 @@ use Cc\HelperArray;
  * @uses DependenceInyector SE UTILIZA PARA IYECTAR LOS PARAMETROS EN LOS METODOS Autentica, OnFailed Y OnSuccess
  *
  */
-abstract class Autenticate extends SESSION
+abstract class Autenticate extends Model
 {
 
     private $exept = [];
@@ -41,6 +41,7 @@ abstract class Autenticate extends SESSION
     private $statusClose = false;
     protected $AccessUser = [];
     private $falied = NULL;
+    protected $InternalSession;
 
     /**
      * INDICA QUE LA AUTENTICACION FALLO PUEDE SER COMPARADA CON 
@@ -60,31 +61,52 @@ abstract class Autenticate extends SESSION
 
         parent::__construct();
         $conf = Mvc::App()->Config();
-        if (!is_dir($conf['App']['Cache']))
-            mkdir($conf['App']['Cache']);
-        $path = $conf['App']['Cache'] . 'session' . DIRECTORY_SEPARATOR;
-        if (!is_dir($path))
-            mkdir($path);
-        session_save_path($path);
+
         $this->EstableceParam($param);
         $this->exept = $exet;
         self::$ReadAndClose = (isset($conf['Autenticate']['SessionCookie']['ReadAndClose']) ? $conf['Autenticate']['SessionCookie']['ReadAndClose'] : false) && $this->is_Autenticable();
     }
 
-    public function Start($id = NULL)
+    public function __destruct()
     {
-        $new = false;
-        $this->name = session_name();
-        if (!isset($_COOKIE[$this->name]) || !file_exists(session_save_path() . "sess_" . ValidFilename::ValidName($_COOKIE[$this->name])))
-        {
-            unset($_COOKIE[$this->name]);
-            $new = true;
-        }
+        $this->InternalSession[static::class] = $this->_ValuesModel;
+    }
 
-        parent::Start($id);
-        //session_regenerate_id(true);
-        if ($new)
+    protected function Campos()
+    {
+        return [];
+    }
+
+    public function Destroy()
+    {
+        $this->InternalSession[static::class] = [];
+    }
+
+    public function Del()
+    {
+        $this->_ValuesModel = ['initialized' => true];
+
+        // $this->TingerEvent('OnSessionRegister');
+    }
+
+    public function Start(InternalSession &$session)
+    {
+        $this->InternalSession = &$session;
+
+        if (isset($session[static::class]) && isset($session[static::class]['initialized']))
         {
+            $this->_ValuesModel = &$session->GetRefenece(static::class);
+        } else
+        {
+
+            $session[static::class] = ['initialized' => true];
+
+            $this->_ValuesModel = &$session->GetRefenece(static::class);
+            if (!is_array($this->_ValuesModel))
+            {
+                $session[static::class] = ['initialized' => true];
+            }
+
             $this->TingerEvent('OnSessionRegister');
         }
     }
@@ -175,6 +197,7 @@ abstract class Autenticate extends SESSION
      */
     public function offsetSet($offset, $value)
     {
+
         if ($this->statusClose)
         {
             ErrorHandle::Notice("La modificacion del valor de \$_SESSION[$offset] no surtira efecto ya que se cerro el archivo de session");
@@ -364,7 +387,7 @@ abstract class Autenticate extends SESSION
 
         if (self::$ReadAndClose)
         {
-            parent::Commit();
+            $this->Commit();
         }
         return true;
     }
@@ -385,6 +408,7 @@ abstract class Autenticate extends SESSION
 
 
         $retur = true;
+
         foreach (self::$param as $p)
         {
             if (!isset($athu[$p]) || $athu[$p] != $this->offsetGet($p))
@@ -408,7 +432,6 @@ abstract class Autenticate extends SESSION
     public function Commit()
     {
         $this->statusClose = true;
-        parent::Commit();
     }
 
 }

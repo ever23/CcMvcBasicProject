@@ -1,9 +1,23 @@
 <?php
 
-//declare(TICKS = 1);
-
-/* define('namespace_Cc', '\\Cc\\');
-  define('namespace_CcMvc', '\\Cc\\Mvc\\'); */
+/*
+ * Copyright (C) 2016 Enyerber Franco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  
+ */
 
 namespace Cc;
 
@@ -50,6 +64,11 @@ include_once __DIR__ . '/../Cc/Autoload/CoreClass.php';
  */
 class Mvc
 {
+
+    /**
+     * Directivas apache  para el redireccionamiento de todas las peticiones hacia el archivo de ejecucion 
+     */
+    const Htaccess = "RewriteEngine on\nRewriteCond %{REQUEST_URI} !\.(php|inc)$\nRewriteRule . ";
 
     /**
      * 
@@ -99,14 +118,15 @@ class Mvc
     public $Request = NULL;
 
     /**
-     *
+     * instancia del controlador de views 
      * @var ViewController 
+     * 
      */
     private $View = '';
 
     /**
-     *
-     * @var string directorio de procedimientos
+     * directorio de procedimientos
+     * @var string 
      */
     private $procedures;
 
@@ -198,13 +218,24 @@ class Mvc
     private $time = NULL;
     private $CacheCore = [];
     private $CacheRouter = ['expire' => NULL, 'request' => '', 'requestStatic' => ''];
+    private $InternalSession;
 
     /**
      *
      * @var DocumentBuffer 
      */
     public $Buffer;
+
+    /**
+     * indica si el contenido sera procesado
+     * @var bool 
+     */
     public $ProcessConten = true;
+
+    /**
+     *
+     * @var bool 
+     */
     private $fin = false;
 
     use CoreClass
@@ -232,7 +263,7 @@ class Mvc
         self::$Instance = &$this;
         $this->StartAutoloadCore(realpath(dirname(__FILE__) . '/../'));
 
-        //$this->CoreClass['Cc\\Config'] = 'Cc/Config/Config.php';
+//$this->CoreClass['Cc\\Config'] = 'Cc/Config/Config.php';
         $this->conf = new Config($defaultConf);
 
         $this->conf->Load($conf);
@@ -303,7 +334,7 @@ class Mvc
         {
             $file = basename(self::$ExecuteFile);
             $f = fopen(dirname(self::$ExecuteFile) . '/.htaccess', 'w+');
-            fwrite($f, "RewriteEngine on \nRewriteRule . " . $file);
+            fwrite($f, self::Htaccess . $file);
             fclose($f);
         }
         $this->Log('Cofigurando Dependencias ....');
@@ -317,7 +348,7 @@ class Mvc
         }
         if ($this->conf['Router']['GetControllerFormat'] == Router::Get)
         {
-            // $this->CacheRouter['expire'] = '+1 day';
+// $this->CacheRouter['expire'] = '+1 day';
             $get = isset($_GET[$this->conf['Router']['GetControllers']]) ? '?' . $this->conf['Router']['GetControllers'] . '=' . $_GET[$this->conf['Router']['GetControllers']] : '';
             $this->CacheRouter['request'] = strtolower($this->Router->GetRequestFile() . $get);
         }//requestStatic
@@ -364,26 +395,54 @@ class Mvc
         }
     }
 
-    /* public function __debugInfo()
-      {
-      return $this;
-      } */
+    /**
+     * returna una referencia al objeto se session interna 
+     * @return Mvc\InternalSession
+     */
+    public function &GetInternalSession()
+    {
+        return $this->InternalSession;
+    }
 
+    /**
+     * @access private
+     * @return \Cc\Mvc
+     */
+    public function __debugInfo()
+    {
+        return [];
+    }
+
+    /**
+     * Retorna el nombre del cache para el enrrutamiento
+     * @return string
+     */
     public function GetNameCacheRouter()
     {
         return $this->CacheRouter['request'];
     }
 
+    /**
+     * Retorna el nombre del cache para el enrrutamiento estatico
+     * @return string
+     */
     public function GetNameStaticCacheRouter()
     {
         return $this->CacheRouter['requestStatic'];
     }
 
+    /**
+     * indica si la aplicacion se encuentra en modo de depuracion 
+     * @return bool
+     */
     public function IsDebung()
     {
         return !isset($this->conf['debung'][0]);
     }
 
+    /**
+     * procesa la configuracion para determinar si esta en modo de depuracion o de produccion 
+     */
     private function Debung()
     {
         $this->t = microtime(true);
@@ -458,7 +517,7 @@ class Mvc
         if (count(SearchClass::$classes) > 0)
             Cache::Set('AutoloadCore', SearchClass::$classes + $this->CacheCore + $this->AutoloaderLib->GetLastLoadFiles());
         Cache::Save();
-        // $this->Log(Cache::GetObjectCache());
+// $this->Log(Cache::GetObjectCache());
 
         $this->Log("Fin de la Aplicacion ...", true);
         unset($this->Response);
@@ -524,10 +583,10 @@ class Mvc
             }
             MvcEvents::TingerAndDependence('OnEndApp');
         }
-        // var_dump(Mvc::App()->ProcessConten);
+// var_dump(Mvc::App()->ProcessConten);
         self::App()->fin = true;
 
-        //  var_dump(ob_list_handlers());
+//  var_dump(ob_list_handlers());
 
         self::App()->Buffer->EndConten();
 
@@ -613,6 +672,7 @@ class Mvc
 
         self::App()->Log("Redireccionando a " . $redirec);
         header("Location: " . $redirec);
+        exit;
     }
 
     /**
@@ -647,6 +707,7 @@ class Mvc
         $conf = self::Config();
         ErrorHandle::SetHandle(-5);
         $session = false;
+        $this->InternalSession = new Mvc\InternalSession();
         if (!empty($conf['Autenticate']['class']) && !empty($conf['Autenticate']['SessionName']))
         {
 
@@ -659,26 +720,24 @@ class Mvc
             $this->Session = new $class_name(...$conf['Autenticate']['param']);
         } else
         {
-            $this->Session = new SESSION();
+            $this->Session = [];
         }
-
-        $this->Session->SetName($conf['Autenticate']['SessionName']);
+        $this->InternalSession->SetName($conf['Autenticate']['SessionName']);
+        //$this->Session->SetName($conf['Autenticate']['SessionName']);
         if ($session)
         {
             $session['path'] = !is_null($session['path']) ? $session['path'] : $this->conf['Router']['DocumentRoot'];
-            $this->Session->SetCookie($session['cahe'], $session['time'], $session['path'], $session['dominio'], $conf['Router']['protocol'] == 'https', $session['httponly']);
+            $this->InternalSession->SetCookie($session['cahe'], $session['time'], $session['path'], $session['dominio'], $conf['Router']['protocol'] == 'https', $session['httponly']);
         }
 
-
+        $this->InternalSession->Start();
         if ($this->Session instanceof Autenticate)
         {
             $this->Session->SetDependenceInyector($this->DependenceInyector);
-            $this->Session->Start();
+
+            $this->Session->Start($this->InternalSession);
             $this->Log("Autenticando....");
             $this->Session->Auth();
-        } else
-        {
-            $this->Session->Start();
         }
         ErrorHandle::RecoverHandle();
         ErrorHandle::SetHandle();
@@ -686,7 +745,7 @@ class Mvc
     }
 
     /**
-     *  RETONNA UN INSTANCIA DE LA APP QUE SE ESTA EJECUTANDO
+     *  RETONNA LA  INSTANCIA DEL APP QUE SE ESTA EJECUTANDO
      *  @return Mvc
      */
     public static function &App()
@@ -695,7 +754,7 @@ class Mvc
     }
 
     /**
-     * EJECUTA LA APLICACION 
+     * Inicia la ejecucion de la aplicacion 
      */
     public function Run()
     {
@@ -729,9 +788,13 @@ class Mvc
         self::EndApp();
     }
 
+    /**
+     * ENRUTA BASADO EN LA INFORMACION ALMACENADA EN CACHE 
+     * @return boolean
+     */
     private function RouterByCache()
     {
-        // return false;
+// return false;
         $cookie = '';
         if (isset($_COOKIE['GDmaxW']))
         {
@@ -795,6 +858,11 @@ class Mvc
         return false;
     }
 
+    /**
+     * ENRUTA UN CONTROLADOR BASADO EN LA INFORMACION ALMACENADA EN CACHE 
+     * @param array $cache
+     * @return boolean
+     */
     private function RouteControllerCache($cache)
     {
         $this->page = $cache['Controller'];
@@ -826,7 +894,7 @@ class Mvc
 
             $realfile = new \SplFileInfo($cache2['RealFile']);
             $time = new \DateTime();
-            // $age = $realfile->getMTime() - $time->getTimestamp();
+// $age = $realfile->getMTime() - $time->getTimestamp();
             if (file_exists($realfile))
             {
                 if (!$_POST && ( $time->getTimestamp() - $realfile->getMTime() ) < $cache2['LifeTime'])
@@ -849,7 +917,7 @@ class Mvc
                         }
                     }
 //echo ( $time->getTimestamp() - $realfile->getMTime()), ':', $cache2['LifeTime'];
-                    // echo "<!--Response by cache MaxAge:" . $cache2['LifeTime'] . " Age:" . ( $time->getTimestamp() - $realfile->getMTime() ) . " s -->\n";
+// echo "<!--Response by cache MaxAge:" . $cache2['LifeTime'] . " Age:" . ( $time->getTimestamp() - $realfile->getMTime() ) . " s -->\n";
 
                     readfile($realfile);
                     exit;
@@ -891,7 +959,7 @@ class Mvc
 
             $UserAppDir = $this->conf['App']['app'];
             $this->Log("Enrutado a  " . $this->Router->InfoFile->getPathname());
-            // if ($this->AppDir == substr($this->Router->InfoFile->getPathname(), 0, strlen($this->AppDir)) || $UserAppDir == substr($this->Router->InfoFile->getPathname(), 0, strlen($UserAppDir)))
+// if ($this->AppDir == substr($this->Router->InfoFile->getPathname(), 0, strlen($this->AppDir)) || $UserAppDir == substr($this->Router->InfoFile->getPathname(), 0, strlen($UserAppDir)))
             $sujeto = $this->Router->InfoFile->getPathname();
             if (preg_match('/^(' . preg_quote($this->AppDir . DIRECTORY_SEPARATOR, '/') . ')/', $sujeto) || preg_match('/^(' . preg_quote($UserAppDir, '/') . ')/', $sujeto))
             {
@@ -929,6 +997,9 @@ class Mvc
         }
     }
 
+    /**
+     * 
+     */
     private function RouterExt()
     {
         $accept = [];
@@ -1015,6 +1086,7 @@ class Mvc
     /**
      * RETORNA UNA REFERENCIA A EL OBJETO MANEJADOR DE BASES DE DATOS 
      * @return iDataBase
+     * @throws Exception si el objeto no es una instancia de iDataBase o es NULL
      */
     public function &DataBase()
     {
@@ -1049,6 +1121,9 @@ class Mvc
         }
     }
 
+    /**
+     * resuelve y cargar el controlador 
+     */
     private function LoadController()
     {
         Controllers::$View = &$this->View;
@@ -1076,6 +1151,12 @@ class Mvc
         }
     }
 
+    /**
+     * 
+     * @param array $aceptXss
+     * @param array $xss
+     * @return array
+     */
     private function SecurityConf($aceptXss, $xss)
     {
         if (!isset($aceptXss['_POST']) || !is_array($aceptXss['_POST']))
@@ -1114,6 +1195,9 @@ class Mvc
         return $aceptXss;
     }
 
+    /**
+     * filtra las variables de entrada 
+     */
     private function SecurityRequest()
     {
 
@@ -1135,6 +1219,9 @@ class Mvc
         $this->DependenceInyector->SetDependenceForParamArray($this->Request->Get);
     }
 
+    /**
+     * carga las librerias externas del controlador 
+     */
     private function LoadLibsExtern()
     {
 
@@ -1187,7 +1274,7 @@ class Mvc
     private function ExecuteController()
     {
         $c = $this->conf['Controllers']['Prefijo'];
-        //echo get_class(self::$Response);
+//echo get_class(self::$Response);
 
         ErrorHandle::SetHandle(-4);
         /* if(!http_response_code())
@@ -1291,8 +1378,9 @@ class Mvc
 
     /**
      * CAMBIA EL OBJETO RESPONSE 
-     * @internal 
-     * @param string $conten_type
+     * @param string $conten_type mime-type
+     * @param array $equal
+     * @return boolean
      */
     public function ChangeResponseConten($conten_type, $equal = false)
     {
@@ -1311,6 +1399,10 @@ class Mvc
         return false;
     }
 
+    /**
+     * cambia el objeto de respuesta al objeto por defecto
+     * @param string $Content_type
+     */
     public function ResponseContenDefault($Content_type)
     {
         $this->Content_type = $this->ContentTypeOrig = $Content_type;
@@ -1322,9 +1414,10 @@ class Mvc
     /**
      * CONECTA CON LA BASE DE DATOS
      * @param array $param
-     * @return type
+     * @return iDataBase
+     * @throws Exception si la clase manejadora no se encuentra
      */
-    public function ConetDataBase(array $param = array())
+    public function &ConetDataBase(array $param = array())
     {
         $this->Log("Conectando con la base de datos ...");
         $conf = self::Config();
@@ -1353,6 +1446,7 @@ class Mvc
                 $_COOKIE = SQLi::Filter($_COOKIE, isset($conf['VarAceptSqlI']['_COOKIE']) ? $conf['VarAceptSqlI']['_COOKIE'] : []);
             }
         }
+        return $this->DataBase;
     }
 
     /**
@@ -1420,7 +1514,7 @@ class Mvc
         {
             Mvc::App()->Log("PROCESANDO LA RESPUESTA  ...");
 
-            //   Mvc::App()->Log(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
+//   Mvc::App()->Log(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 
             try
             {

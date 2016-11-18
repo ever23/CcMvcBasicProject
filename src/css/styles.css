@@ -76,3 +76,5 @@ header
 .FormRow {
     list-style:none; }
 .form-control .FormRow  { margin-top: 15px; }
+.form-control ul {     padding-left: 0;
+                       list-style: none;}

@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * Copyright (C) 2016 Enyerber Franco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  
+ */
+
 namespace Cc\Mvc;
 
 use Cc\Mvc;
@@ -72,6 +91,12 @@ class SelectorControllers
      */
     protected $SearchClass;
     public $ReRouterMethod = false;
+
+    /**
+     *
+     * @var SessionSaveController 
+     */
+    public $sessionController;
 
     /**
      * 
@@ -410,8 +435,15 @@ class SelectorControllers
         try
         {
 
+            $this->ObjControllers = $this->ReflectionClass->newInstanceWithoutConstructor();
 
-            $this->ObjControllers = $this->SearchClass->FactoryObject($param, false);
+            $this->sessionController = new SessionSaveController($this->ObjControllers, $this->ReflectionClass);
+            $this->sessionController->ParseAttrs();
+            if ($costruc)
+            {
+                $this->ObjControllers->__construct(...$param);
+            }
+            //  $this->ObjControllers = $this->SearchClass->FactoryObject($param, false);
             $this->ContextApp = $ContexApp;
         } catch (\Exception $ex)
         {
@@ -540,7 +572,7 @@ class SelectorControllers
                 return false;
             } elseif ($this->conf['debung']['ModoExeption'] != 0)
             {
-                throw new Exception($ERROR);
+                throw new SelectorControllerException($ERROR);
             }
         }
         $this->ContextApp = false;
@@ -672,4 +704,12 @@ class SelectorControllers
         }
     }
 
+}
+
+/**
+ * 
+ */
+class SelectorControllerException extends Exception
+{
+    
 }

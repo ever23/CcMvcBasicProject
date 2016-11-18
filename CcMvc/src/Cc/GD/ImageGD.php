@@ -186,6 +186,12 @@ class ImageGD
         $this->colores = array();
         $this->img_import = array();
         $this->fuente = array();
+
+        if ($this->tipo == 'png' || $this->tipo == 'gif')
+        {
+            imagealphablending($this->img, false);
+            imagesavealpha($this->img, true);
+        }
         $this->fondo = imagecolorallocate($this->img, 255, 255, 255);
         $istransparent = imagecolortransparent($this->img);
         // throw new Exception($istransparent);
@@ -272,6 +278,8 @@ class ImageGD
 
         if ($this->tipo == 'png' || $this->tipo == 'gif')
         {
+            imagealphablending($temp, false);
+            imagesavealpha($temp, true);
             imagefill($temp, 0, 0, $this->mask_color);
             imagecolortransparent($temp, $this->mask_color);
         }

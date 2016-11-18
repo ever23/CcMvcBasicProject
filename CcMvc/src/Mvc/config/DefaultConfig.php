@@ -208,7 +208,7 @@ return
              */
             'Autenticate' =>
             [
-                'class' => '\Cc\Mvc\SESSION',
+                'class' => NULL,
                 'param' =>
                 [
                     ['*/*/*']
@@ -294,12 +294,16 @@ return
                     'php' => [
                         'class' => '\\Cc\\Mvc\\ViewPHP',
                         'param' => [],
+                    ],
+                    'twig' => [
+                        'class' => '\\Cc\\Mvc\\Twig\\ViewLoader',
+                        'param' => [],
                     ]
                 ]
             ],
             /**
-             * Configuraciones specificas de la libreria smarty 
-             * solo son usada cuando se esta usando la libreria 
+             * Configuraciones especificas de la libreria smarty 
+             * solo son usada cuando se esta usando la libreria para cargar templetes 
              */
             'SmartyConfig' => [
                 'LeftDelimiter' => '{',
@@ -310,10 +314,28 @@ return
                 'Plugins' => [
                 ],
             ],
+            /**
+             * Configuraciones especificas de la libreria twig 
+             * solo son usada cuando se esta usando la libreria para cargar templetes 
+             */
+            'TwigConfig' =>
+            [
+                'Extensiones' =>
+                [
+                ],
+                'Lexer' =>
+                [
+                    'tang_comment' => ['{#', '#}'],
+                    'tang_block' => ['{%', '%}'],
+                    'tang_variable' => ['{{', '}}'],
+                    'whitespace_trim' => '-',
+                    'interpolation' => ['#{', '}'],
+                ]
+            ],
             'WebMaster' =>
             [
-                'name' => 'webmaster',
-                'email' => 'webmaster@localhost.com'
+                'name' => isset($_SERVER['SERVER_ADMIN']) ? $_SERVER['SERVER_ADMIN'] : 'webmaster',
+                'email' => isset($_SERVER['SERVER_ADMIN']) ? $_SERVER['SERVER_ADMIN'] : 'webmaster@localhost.com'
             ],
             /**
              * Configuracion para seo

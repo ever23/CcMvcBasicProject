@@ -2,6 +2,6 @@
 
 return [
     'class' => '\\Cc\\Mvc\\MySQLi',
-    'param' => ['localhost', 'root', '', 'test']
+    'param' => ['localhost', 'root', '', 'testDB']
 ];
 

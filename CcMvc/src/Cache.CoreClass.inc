@@ -1,8 +1,10 @@
 <?php
-/* Create by \CcMvc 2016-11-13 16:09:44 */
+/* Create by \CcMvc 2016-11-17 19:54:20 */
  return array (
   'class' => 
   array (
+    'CcMvc' => 'CcMvc.php',
+    'CcWS' => 'CcWS.php',
     'Cc\\Autoload' => 'Cc\\Autoload\\Autoload.php',
     'Cc\\AutoloadExternLib' => 'Cc\\Autoload\\AutoloadExternLib.php',
     'Cc\\Autoload\\CoreClass' => 'Cc\\Autoload\\CoreClass.php',
@@ -14,6 +16,7 @@
     'Cc\\CacheFile' => 'Cc\\Cache\\CacheFile.php',
     'Cc\\CacheFilePHP' => 'Cc\\Cache\\CacheFilePHP.php',
     'Cc\\ICache' => 'Cc\\Cache\\ICache.php',
+    'Cc\\MemCached' => 'Cc\\Cache\\MemCached.php',
     'Cc\\Config' => 'Cc\\config\\Config.php',
     'Cc\\DBRow' => 'Cc\\DataBase\\DBRow.php',
     'Cc\\DBtabla' => 'Cc\\DataBase\\DBtabla.php',
@@ -84,6 +87,9 @@
     'Cc\\Mvc\\Smarty\\PluginInsertStaticAll' => 'Mvc\\Adapters\\Smarty\\InterfacesPlugins.php',
     'Cc\\Mvc\\ViewSmartyTpl' => 'Mvc\\Adapters\\Smarty\\ViewSmartyTpl.php',
     'Cc\\Mvc\\ParseObjectSmartyTpl' => 'Mvc\\Adapters\\Smarty\\ViewSmartyTpl.php',
+    'Cc\\Mvc\\Twig\\Loader' => 'Mvc\\Adapters\\Twig\\Loader.php',
+    'Cc\\Mvc\\Twig\\ViewLoader' => 'Mvc\\Adapters\\Twig\\ViewLoader.php',
+    'Cc\\Mvc\\Twig\\Extencion\\CcMvc' => 'Mvc\\Adapters\\Twig\\extenciones\\CcMvc.php',
     'Cc\\Mvc\\Config' => 'Mvc\\config\\Config.php',
     'Cc\\Mvc\\ClouserController' => 'Mvc\\Controllers\\ClousureController.php',
     'Cc\\Mvc\\Controllers' => 'Mvc\\Controllers\\Controllers.php',
@@ -97,6 +103,7 @@
     'Cc\\Mvc\\MapingControllers' => 'Mvc\\Controllers\\MapingControllers.php',
     'Cc\\Mvc\\MvcEvents' => 'Mvc\\Controllers\\MvcEvents.php',
     'Cc\\Mvc\\SelectorControllers' => 'Mvc\\Controllers\\SelectorControllers.php',
+    'Cc\\Mvc\\SelectorControllerException' => 'Mvc\\Controllers\\SelectorControllers.php',
     'Cc\\Mvc\\TestController' => 'Mvc\\Controllers\\TestController.php',
     'Cc\\Mvc\\DBtabla' => 'Mvc\\DataBase\\DataBase.php',
     'Cc\\Mvc\\DBRow' => 'Mvc\\DataBase\\DataBase.php',
@@ -117,7 +124,6 @@
     'Cc\\Mvc\\Cookie' => 'Mvc\\request\\Cookie.php',
     'Cc\\Mvc\\PostFiles' => 'Mvc\\request\\PostFiles.php',
     'Cc\\Mvc\\Request' => 'Mvc\\request\\Request.php',
-    'Cc\\Mvc\\Router' => 'Mvc\\request\\Router.php',
     'Cc\\Mvc\\DocumentBuffer' => 'Mvc\\Response\\DocumentBuffer.php',
     'Cc\\Mvc\\GDResponse' => 'Mvc\\Response\\GDResponse.php',
     'Cc\\Mvc\\GDexception' => 'Mvc\\Response\\GDResponse.php',
@@ -131,10 +137,15 @@
     'Cc\\Mvc\\ResponseJsCss' => 'Mvc\\Response\\ResponseJsCss.php',
     'Cc\\Mvc\\Html' => 'Mvc\\Response\\Html\\Html.php',
     'Cc\\Mvc\\JsonLD' => 'Mvc\\Response\\Html\\JsonLd.php',
-    'Cc\\Mvc\\AccessUserController' => 'Mvc\\session\\AccessUserController.php',
+    'Cc\\Mvc\\RouteByMatch' => 'Mvc\\Route\\RouteByMatch.php',
+    'Cc\\Mvc\\Router' => 'Mvc\\Route\\Router.php',
     'Cc\\Mvc\\Autenticate' => 'Mvc\\session\\Autenticate.php',
     'Cc\\Mvc\\AuteticateUserDB' => 'Mvc\\session\\AuteticateUserDB.php',
+    'Cc\\Mvc\\InternalSession' => 'Mvc\\session\\InternalSession.php',
     'Cc\\Mvc\\SESSION' => 'Mvc\\session\\session.php',
+    'Cc\\Mvc\\AccessUserController' => 'Mvc\\session\\SessionController\\AccessUserController.php',
+    'Cc\\Mvc\\SessionSaveController' => 'Mvc\\session\\SessionController\\SessionSaveController.php',
+    'Cc\\Mvc\\PropertiesInSession' => 'Mvc\\session\\SessionController\\SessionSaveController.php',
     'Cc\\Mvc\\ValidArray' => 'Mvc\\Validate\\Valid.php',
     'Cc\\Mvc\\ValidString' => 'Mvc\\Validate\\Valid.php',
     'Cc\\Mvc\\ValidNumber' => 'Mvc\\Validate\\Valid.php',

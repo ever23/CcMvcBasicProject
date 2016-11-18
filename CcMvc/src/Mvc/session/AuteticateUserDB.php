@@ -349,10 +349,11 @@ abstract class AuteticateUserDB extends Autenticate
      */
     public function CloseSessionUser($destroy = false)
     {
-        $this->offsetUnset($this->ColUserName);
-        $this->offsetUnset('CreadorHashClass');
-        $this->offsetUnset($this->ColPassword);
-        $this->offsetUnset($this->ColUserType);
+        $this[$this->ColUserName] = '';
+        $this['CreadorHashClass'] = '';
+        $this[$this->ColPassword] = '';
+        $this[$this->ColUserType] = '';
+
         if ($destroy)
             $this->Destroy();
     }
@@ -366,6 +367,7 @@ abstract class AuteticateUserDB extends Autenticate
     protected function Autentica()
     {
         $this->LoadDBTabla();
+
         if ($this->offsetExists($this->ColUserName) && $this->offsetGet($this->ColPassword) && $this->offsetGet('CreadorHashClass'))
         {
 

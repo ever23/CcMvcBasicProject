@@ -1,5 +1,22 @@
 <?php
 
+/*
+ * Copyright (C) 2016 Enyerber Franco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace Cc\Mvc;
 
 use Cc\Cache;
@@ -86,6 +103,15 @@ class DBtabla extends \Cc\DBtabla implements \Serializable, ParseObjectSmartyTpl
     private $each = true;
     private $eachend = true;
 
+    /**
+     * funcion de bloque para smarty
+     * @param array $params
+     * @param string $content
+     * @param Smarty $smarty
+     * @param bool $repeat
+     * @return string
+     * @access private 
+     */
     public function each($params, $content = NULL, &$smarty, &$repeat)
     {
 
@@ -124,6 +150,11 @@ class DBtabla extends \Cc\DBtabla implements \Serializable, ParseObjectSmartyTpl
         }
     }
 
+    /**
+     * 
+     * @return array
+     * @see ParseObjectSmartyTpl::ParseSmaryTpl()
+     */
     public function ParseSmaryTpl()
     {
         return [
@@ -189,6 +220,11 @@ class PDO extends \Cc\PDO
 class SQLite3 extends \Cc\SQLite3
 {
 
+    /**
+     * 
+     * @param string $tabla
+     * @return \Cc\Mvc\DBtabla
+     */
     public function Tab($tabla)
     {
         return new DBtabla($this, $tabla);

@@ -77,7 +77,7 @@ interface AutoloaderLibs extends iProtected
      * <code>
      * public static function LoadExternLib()
      * {
-     *     return [ 'dompdf-master/autoload.inc.php'];
+     *     return [ method=>'dompdf-master/autoload.inc.php'];
      * }
      * </code>
      * @return array 
@@ -96,7 +96,8 @@ interface ExtByController extends iProtected
 {
 
     /**
-     * @return array ['require'=>[],'accept'=>[]]
+     * 
+     * @return array ['require'=>[method=>[..ext]],'accept'=>[method=>[..ext]]]
      */
     public static function ExtAccept();
 }
@@ -111,13 +112,42 @@ interface ExtByController extends iProtected
 interface SecurityRequest extends iProtected
 {
 
+    /**
+     * establece las variables que no se pasaran por del filtro Xss
+     * <code>
+     * public static function XssAcept()
+     * {
+     *     return [ 
+     *      '_GET'=>[...list vars],
+     *      '_POST'=>[...list vars],
+     *      '_COOKIE'=>[...list vars],
+     *      ];
+     * }
+     * </code>
+     * @return array 
+     */
     public static function XssAcept();
 
+    /**
+     * establece las variables que no se pasaran por del filtro SQLi
+     * <code>
+     * public static function SQliAcept()
+     * {
+     *     return [ 
+     *      '_GET'=>[...list vars],
+     *      '_POST'=>[...list vars],
+     *      '_COOKIE'=>[...list vars],
+     *      ];
+     * }
+     * </code>
+     * @return array 
+     */
     public static function SQliAcept();
 }
 
 /**
  * SEGURIDAD DE METODOS PUBLICOS 
+ * 
  * @author ENYREBER FRANCO <enyerverfranco@gmail.com> , <enyerverfranco@outlook.com>  
  * @package CcMvc  
  * @subpackage Controladores 
@@ -125,9 +155,16 @@ interface SecurityRequest extends iProtected
 interface ProtectedMetodHttp extends iProtected
 {
 
+    /**
+     * establece los metodos publicos que no podran ser accesados via enrutamiento automatico
+     * @return array 
+     */
     public static function MethodsNoHttp();
 }
 
+/**
+ * @deprecated since version 8.8.3.8 
+ */
 interface ReRouterMethod extends iProtected
 {
 

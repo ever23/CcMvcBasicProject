@@ -1,5 +1,22 @@
 <?php
 
+/*
+ * Copyright (C) 2016 Enyerber Franco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace Cc\Mvc;
 
 use Cc\Mvc;
@@ -14,9 +31,17 @@ use Cc\Mvc;
 class ErrorHandle extends \Cc\ErrorHandle
 {
 
-    public function __construct($errmo, $errstr, $errfile, $errline, $errcontex)
+    /**
+     * 
+     * @param int $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param int $errline
+     * @param object $errcontex
+     */
+    public function __construct($errno, $errstr, $errfile, $errline, $errcontex)
     {
-        parent::__construct($errmo, $errstr, $errfile, $errline, $errcontex);
+        parent::__construct($errno, $errstr, $errfile, $errline, $errcontex);
     }
 
     public static function ExceptionManager($e, $ini = 0, $end = NULL, $plustrace = NULL, $fatal = NULL)

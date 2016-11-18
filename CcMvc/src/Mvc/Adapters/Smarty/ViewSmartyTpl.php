@@ -1,9 +1,22 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2016 Enyerber Franco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  
  */
 
 namespace Cc\Mvc;
@@ -13,7 +26,7 @@ use Cc\Autoload;
 use Cc\Cache;
 
 /**
- * Adaptador para smarty 
+ * Adaptador ViewLoader para cargar templetes smarty 
  *
  * @author Enyerber Franco
  */
@@ -21,15 +34,39 @@ class ViewSmartyTpl implements ViewLoaderExt
 {
 
     /**
-     *
+     * instancia de smarty
      * @var \Smarty
      */
     protected $smarty;
+
+    /**
+     * configuracion de smary
+     * @var array 
+     */
     protected $config;
+
+    /**
+     *
+     * @var \Smarty 
+     */
     public static $SmartyRef = NULL;
+
+    /**
+     * directorio de Plugins
+     * @var string 
+     */
     protected $PluginsDir = NULL;
+
+    /**
+     * directorio de configuracion 
+     * @var string 
+     */
     protected $ConfigDir = NULL;
 
+    /**
+     * 
+     * @throws Exception si la clase \smarty no existe
+     */
     public function __construct()
     {
         if (!class_exists("\\Smarty"))
@@ -48,6 +85,16 @@ class ViewSmartyTpl implements ViewLoaderExt
         }
     }
 
+    /**
+     * 
+     * @param object $context
+     * @param string $file
+     * @param array $agrs
+     * @return string
+     * @throws \SmartyCompilerException
+     * @throws Exception
+     * @see ViewLoaderExt::Fetch()
+     */
     public function Fetch(&$context, $file, array $agrs)
     {
         $this->smarty->clearAllAssign();
@@ -68,6 +115,15 @@ class ViewSmartyTpl implements ViewLoaderExt
         }
     }
 
+    /**
+     * 
+     * @param object $context
+     * @param string $file
+     * @param array $agrs
+     * @return mixes
+     * @throws \SmartyCompilerException
+     * @see ViewLoaderExt::Load()
+     */
     public function Load(&$context, $file, array $agrs)
     {
         $this->smarty->clearAllAssign();
@@ -118,7 +174,7 @@ class ViewSmartyTpl implements ViewLoaderExt
         $this->smarty->assign("this", $context);
     }
 
-    public function ConfigSmarty()
+    private function ConfigSmarty()
     {
         $this->smarty->debugging = Mvc::App()->IsDebung() && $this->config['DebungConsole'];
         $this->smarty->setLeftDelimiter($this->config['LeftDelimiter']);
@@ -154,19 +210,34 @@ class ViewSmartyTpl implements ViewLoaderExt
             $this->smarty->registerObject("CcMvc", $ag['object'], $ag['allowed'], $ag['format'], $ag['block_methods']);
         }
         $this->smarty->assignGlobal('CcMvc', Mvc::App());
-        if (is_object(Mvc::App()->SelectorController->GetController()) && Mvc::App()->SelectorController->GetController() instanceof ParseObjectSmartyTpl)
+
+        if (Mvc::App()->SelectorController->GetController())
         {
-            $ag = Mvc::App()->SelectorController->GetController()->ParseSmaryTpl();
+            if (is_object(Mvc::App()->SelectorController->GetController()) && Mvc::App()->SelectorController->GetController() instanceof ParseObjectSmartyTpl)
+            {
+                $ag = Mvc::App()->SelectorController->GetController()->ParseSmaryTpl();
+                $ag['allowed'] = isset($ag['allowed']) ? $ag['allowed'] : [];
+                $ag['format'] = isset($ag['format']) ? $ag['format'] : true;
+                $ag['block_methods'] = isset($ag['block_methods']) ? $ag['block_methods'] : [];
+                $ag['object'] = (isset($ag['object']) ? $ag['object'] : Mvc::App()->SelectorController->GetController());
+                $this->smarty->registerObject("Controller", $ag['object'], $ag['allowed'], $ag['format'], $ag['block_methods']);
+            }
+            $this->smarty->assignGlobal('Controller', Mvc::App()->SelectorController->GetController());
+        }
+
+        if (is_object(Mvc::App()->Request) && Mvc::App()->Request instanceof ParseObjectSmartyTpl)
+        {
+            $ag = Mvc::App()->Request->ParseSmaryTpl();
             $ag['allowed'] = isset($ag['allowed']) ? $ag['allowed'] : [];
             $ag['format'] = isset($ag['format']) ? $ag['format'] : true;
             $ag['block_methods'] = isset($ag['block_methods']) ? $ag['block_methods'] : [];
-            $ag['object'] = (isset($ag['object']) ? $ag['object'] : Mvc::App()->SelectorController->GetController());
-            $this->smarty->registerObject("Controller", $ag['object'], $ag['allowed'], $ag['format'], $ag['block_methods']);
+            $ag['object'] = (isset($ag['object']) ? $ag['object'] : Mvc::App()->Request);
+            $this->smarty->registerObject("Request", $ag['object'], $ag['allowed'], $ag['format'], $ag['block_methods']);
         }
-        $this->smarty->assignGlobal('Controller', Mvc::App()->SelectorController->GetController());
+        $this->smarty->assignGlobal('Request', Mvc::App()->Request);
     }
 
-    public function RegisterPlugin($type, $plugin)
+    protected function RegisterPlugin($type, $plugin)
     {
         if (!in_array($type, ['function', 'modifier', 'block', 'compiler', 'prefilter', 'postfilter', 'outputfilter', 'resource', 'insert']))
         {
@@ -178,7 +249,7 @@ class ViewSmartyTpl implements ViewLoaderExt
         }
     }
 
-    public function LoadPlugins()
+    private function LoadPlugins()
     {
         if (Mvc::App()->IsDebung() && file_exists($this->PluginsDir . \Cc\Autoload\FileCore))
         {
@@ -300,8 +371,28 @@ class ViewSmartyTpl implements ViewLoaderExt
 
 }
 
+/**
+ * interface para definir como smarty debe tratar el objeto que la implemente  
+ *  @author Enyerber Franco
+ */
 interface ParseObjectSmartyTpl extends iProtected
 {
 
+    /**
+     * <code>
+     * <?php
+     * public function ParseSmaryTpl()
+     * {
+     *      return [
+     *      'allowed'=>array,//lista de metodo que estaran disponibles en los templetes 
+     *      'format'=>bool,// indica si el formato es tradicional o de etiquetas 
+     *      'block_methods'=>array,// lista de funcion de bloques 
+     * 
+     *      ];
+     * }
+     * 
+     * </code>
+     * @return array 
+     */
     public function ParseSmaryTpl();
 }

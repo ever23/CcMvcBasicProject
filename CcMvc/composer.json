@@ -3,7 +3,6 @@
     "type": "framework",
     "description": "CcMvc Framework php",
     "keywords": [
-        "Mvc"
     ],
     "homepage": "http://ccmvc.com.ve",
     "license": "GPL-3.0",
@@ -24,12 +23,13 @@
     },
     "autoload": {
         "classmap": [
-            "CcMvc.php",
-            "CcWs.php"
+            "src/CcMvc.php",
+            "src/CcWs.php"
         ]
     },
     "suggest": {
         "smarty/smarty": "El motor de plantillas smarty puede ser usado para cargar templetes en los views y layauts (3.1.*)",
+        "twig/twig": "El motor de plantillas twig puede ser usado para cargar plantillas en los views y layauts (1.*)",
         "dompdf/dompdf": "El framework lo puede usar para convertir la salida html en pdf automaticamente  (*)"
     },
     "minimum-stability": "dev"

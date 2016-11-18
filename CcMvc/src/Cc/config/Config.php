@@ -69,7 +69,11 @@ class Config implements \ArrayAccess
     protected function RemplaceApp($AppC)
     {
         $app = [];
-        $dirApp = realpath($AppC['app']) . DIRECTORY_SEPARATOR;
+        if (($realPath = realpath($AppC['app'])) !== false)
+        {
+            $dirApp = $realPath . DIRECTORY_SEPARATOR;
+        }
+
         foreach ($AppC as $i => $v)
         {
 
@@ -78,7 +82,10 @@ class Config implements \ArrayAccess
                 $app[$i] = str_replace("{App}", $dirApp, $v);
                 if (!is_dir($app[$i]))
                     mkdir($app[$i]);
-                $app[$i] = realpath($app[$i]) . DIRECTORY_SEPARATOR;
+                if (($realPath = realpath($app[$i])) !== false)
+                {
+                    $app[$i] = $realPath . DIRECTORY_SEPARATOR;
+                }
             } elseif ($i == 'procedimientos')
             {
                 $app[$i] = str_replace("{App}", $dirApp, $v);
@@ -89,7 +96,11 @@ class Config implements \ArrayAccess
                 }
             } else
             {
-                $app[$i] = realpath(str_replace("{App}", $dirApp, $v)) . DIRECTORY_SEPARATOR;
+                $app[$i] = str_replace("{App}", $dirApp, $v);
+                if (($realPath = realpath($app[$i])) !== false)
+                {
+                    $app[$i] = $realPath . DIRECTORY_SEPARATOR;
+                }
             }
         }
         return $app;
@@ -150,7 +161,7 @@ class Config implements \ArrayAccess
     public function offsetUnset($offset)
     {
         //	$this->Set($offset,NULL,time()-1000);
-        //unset($_COOKIE[$offset]);
+        unset($this->config[$offset]);
     }
 
     /**

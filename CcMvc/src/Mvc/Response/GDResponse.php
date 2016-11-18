@@ -1,9 +1,20 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2016 Enyerber Franco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Cc\Mvc;
@@ -103,7 +114,7 @@ class GDResponse implements ResponseConten
 
     public function ActiveCache($is, $lifetime, $Modifytime)
     {
-        $this->DinamicCache = $is;
+        $this->DinamicCache = $is && !Mvc::App()->IsDebung();
         $this->CacheLifeTime = $lifetime;
         $this->MTime = $Modifytime;
     }
@@ -151,7 +162,7 @@ class GDResponse implements ResponseConten
     protected function ResampledImage($image, $nuevo_ancho, $nuevo_alto, $calidad = NULL, $fondo = NULL)
     {
 
-        //return $image;
+        // return $image;
         if (is_string($fondo))
         {
             if ($fondo[0] == '#')
@@ -205,15 +216,18 @@ class GDResponse implements ResponseConten
             Mvc::App()->Log("GDResponse Cookie: w=" . $nuevo_ancho . " h=" . $nuevo_alto);
             ///return $this->ResampledImage($image, $_COOKIE['GDmaxW'], $nuevo_alto)
         }
-        $nuevo_ancho = (int) $nuevo_ancho;
-        $nuevo_alto = (int) $nuevo_alto;
+        $nuevo_ancho = (int) ($nuevo_ancho > 2000 ? 2000 : $nuevo_ancho);
+        $nuevo_alto = (int) ($nuevo_alto > 2000 ? 2000 : $nuevo_alto);
         if (!is_numeric($calidad))
         {
             $calidad = NULL;
         } else
         {
             $calidad = (int) $calidad;
+            $calidad = (int) ($calidad > 100 ? 100 : $calidad);
+            $calidad = (int) ($calidad < 0 ? 0 : $calidad);
         }
+
         if ($alto == $nuevo_alto && $ancho == $nuevo_ancho)
         {
             if ($this->DinamicCache)
@@ -247,9 +261,10 @@ class GDResponse implements ResponseConten
                 $out = $IMG->Output(NULL, "S");
                 break;
             case 'image/jpeg':
-                $out = $IMG->Output(NULL, "S", [is_null($calidad) ? 100 : $calidad]);
+                $out = $IMG->Output(NULL, "S", [is_null($calidad) ? 70 : $calidad]);
                 break;
             case 'image/png':
+                Mvc::App()->Buffer->SetCompres(false);
                 $out = $IMG->Output(NULL, "S", [is_null($calidad) ? 9 : $calidad]);
                 break;
             default :
@@ -293,7 +308,7 @@ class GDResponse implements ResponseConten
     {
         $name = 'w' . ((int) $w) . 'h' . ((int) $h) . 'c' . $c;
         //$name .= str_replace(, "", );
-        $name .= preg_replace("/^(" . preg_quote(dirname(Mvc::App()->GetExecutedFile()) . DIRECTORY_SEPARATOR,'/') . ")/i", "", Mvc::App()->Router->InfoFile->__toString());
+        $name .= preg_replace("/^(" . preg_quote(dirname(Mvc::App()->GetExecutedFile()) . DIRECTORY_SEPARATOR, '/') . ")/i", "", Mvc::App()->Router->InfoFile->__toString());
         $name = str_replace(DIRECTORY_SEPARATOR, '.', $name);
 
         //$name = Mvc::App()->Router->InfoFile->getBasename(Mvc::App()->Router->InfoFile->getExtension());

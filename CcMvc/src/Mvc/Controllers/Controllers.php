@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * Copyright (C) 2016 Enyerber Franco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  
+ */
+
 namespace Cc\Mvc;
 
 use Cc\Mvc;
@@ -13,13 +32,13 @@ use Cc\Mvc;
  *  EL CLIENTE                                                                 
  *                                                                              
  *                                                                              
- * @version 1.0                                                               
- * @fecha 2016-02-07                                                           
+ *                                                              
+ *                                                           
  * @author ENYREBER FRANCO <enyerverfranco@gmail.com> , <enyerverfranco@outlook.com>  
  * @package CcMvc  
  * @subpackage Controladores
  * @example ../examples/CERQU/protected/controllers/Cindex.php EJEMPLO DE UNA CLASE CONTROLADORA EXTENDIDA DE Controllers #1  
- * @example ../examples/CERQU/protected/controllers/CRepresentante.php EJEMPLO DE UNA CLASE CONTROLADORA EXTENDIDA DE Controllers #2
+ * @example ../examples/cine/protected/controllers/Cpelicula.php EJEMPLO DE UNA CLASE CONTROLADORA EXTENDIDA DE Controllers #2
  *
  * @property ViewController $view Controlador de vistas   
  * @property LayautManager $Layaut Controlador de layauts                                                
@@ -39,6 +58,11 @@ abstract class Controllers implements InfoController
      */
     public static $Layaut;
 
+    /**
+     * 
+     * @param string $name
+     * @return mixes
+     */
     public final function &__get($name)
     {
         $NULL = NULL;
@@ -49,11 +73,19 @@ abstract class Controllers implements InfoController
             case 'layaut':
                 return static::$Layaut;
             default :
+
                 ErrorHandle::Notice("EL ATRIBUTO " . static::class . '::$' . $name . " NO ESTA DEFINIDO ");
                 return $NULL;
         }
     }
 
+    /**
+     * 
+     * @param string $name
+     * @param array $arguments
+     * @return mixes
+     * @throws Exception
+     */
     public final function __call($name, $arguments)
     {
         if (method_exists(static::class, $name))
@@ -89,7 +121,7 @@ abstract class Controllers implements InfoController
     }
 
     /**
-     * 
+     * Cambia el objeto de respuesta basado en la extencion pasada por parametro
      * @param string $ext
      * @return bool
      */
@@ -155,6 +187,10 @@ abstract class Controllers implements InfoController
         Mvc::Redirec($page, $get);
     }
 
+    /**
+     * 
+     * @return \ReflectionClass
+     */
     public final static function GetReflectionClass()
     {
         return Mvc::App()->SelectorController->GetReflectionController();

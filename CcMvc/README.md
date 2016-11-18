@@ -20,5 +20,5 @@ Se debe installar via composer usando
 composer required ccmvc/ccmvc
 ```
 
-en GutHub se puede descargar un [CcMvc.com.ve](https://github.com/ever23/CcMvcProyect "proyecto") base CcMvc con el que se puede comenzar un proyecto real 
+en GutHub se puede descargar un [proyecto](https://github.com/ever23/CcMvcProject "proyecto") base CcMvc con el que se puede comenzar un proyecto real 
 Para informacion sobre instalacion visita [CcMvc.com.ve](http://ccmvc.com.ve/documentacion "CcMvc")

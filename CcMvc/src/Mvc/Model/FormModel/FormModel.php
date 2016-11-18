@@ -62,7 +62,7 @@ use Cc\Inyectable;
  * @subpackage Modelo
  * @category FormModel
  */
-abstract class FormModel extends Model implements Inyectable
+abstract class FormModel extends Model implements Inyectable, \Serializable
 {
 
     /**
@@ -92,6 +92,7 @@ abstract class FormModel extends Model implements Inyectable
     const Validate = 2;
 
     private $inyected = false;
+    protected $RequestUri = '';
 
     public static function CtorParam()
     {
@@ -109,14 +110,55 @@ abstract class FormModel extends Model implements Inyectable
         self::$count++;
         $this->protected = $protected;
         $this->inyected = $inyected;
+        $this->RequestUri = Mvc::App()->Request->Uri();
         if (!is_null($action))
         {
             $this->action = $action;
         }
         if (!$inyected)
         {
-            $this->Request($action, $method, $protected);
+            $this->Request();
         }
+    }
+
+    public function serialize()
+    {
+        $seri = [
+            'campos' => $this->campos,
+            'Method' => $this->Method,
+            'action' => $this->action,
+            'NameSubmited' => $this->NameSubmited,
+            'lastPage' => $this->RequestUri,
+            '_ValuesModel' => $this->_ValuesModel,
+            'existFile' => $this->existFile
+        ];
+        return serialize($seri);
+    }
+
+    public function unserialize($serialized)
+    {
+        $serialized = unserialize($serialized);
+        $this->campos = $serialized['campos'];
+        $this->Method = $serialized['Method'];
+        $this->action = NULL;
+        if (!preg_match("/(" . preg_quote($serialized['action'], '/') . ")/i", Mvc::App()->Request->Url()))
+        {
+            $process = false;
+        } else
+        {
+            $process = $serialized['lastPage'] == Mvc::App()->Request->Refere();
+        }
+        $this->inyected = false;
+        $this->NameSubmited = $serialized['NameSubmited'];
+        $this->protected = $serialized['lastPage'] == Mvc::App()->Request->Uri() || $serialized['lastPage'] != Mvc::App()->Request->Refere();
+        $this->inyected = false;
+        $this->_ValuesModel = $serialized['_ValuesModel'];
+        $this->existFile = $serialized['existFile'];
+        $this->RequestUri = Mvc::App()->Request->Uri();
+        ;
+        $this->Request(true, $process);
+
+        //return $this;
     }
 
     public function &Method($method = NULL)
@@ -143,32 +185,23 @@ abstract class FormModel extends Model implements Inyectable
         return $this;
     }
 
-    private function Request()
+    private function Request($serialized = false, $process = true)
     {
         $this->inyected = false;
-        /* if ($this->UseCache && Cache::IsSave('Form.' . static::class))
-          {
-          $cache = Cache::Get('Form.' . static::class);
-          $this->campos = $cache['campos'];
-          foreach ($this->campos as $name => $v)
-          {
 
-          unset($this->{$name});
-          }
-          $this->_ValuesModel = $cache['_ValuesModel'];
-          $this->existFile = $cache['existFile'];
-          } else
-          { */
-        $this->LoadMetaData();
-        /*  Cache::Set('Form.' . static::class, ['campos' => $this->campos, '_ValuesModel' => $this->_ValuesModel, 'existFile' => $this->existFile]);
-          } */
-        $this->ProcessSubmit();
-        if ($this->IsSubmited() && !$this->IsValid())
+        if (!$serialized)
+            $this->LoadMetaData();
+
+        if ($process)
         {
-            foreach ($this->campos as $i => $v)
+            $this->ProcessSubmit();
+            if ($this->IsSubmited() && !$this->IsValid())
             {
-                if ($v[self::TypeHtml] != 'password' && $this->offsetExists($i))
-                    $this->campos[$i][self::DefaultConten] = $this->offsetGet($i);
+                foreach ($this->campos as $i => $v)
+                {
+                    if ($v[self::TypeHtml] != 'password' && $this->offsetExists($i))
+                        $this->campos[$i][self::DefaultConten] = $this->offsetGet($i);
+                }
             }
         }
     }

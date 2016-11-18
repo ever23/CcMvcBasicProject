@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * 
+ */
+
 namespace Cc;
 
 use Cc\Ws\SocketServer;
@@ -12,11 +16,11 @@ include_once __DIR__ . '/../Cc/Autoload/CoreClass.php';
 
 /**
  * App                                                                
- * CLASE PRINCIPAL DE LA RECUBIERTA MVC  PARA LA APLICACION 
+ * CLASE PRINCIPAL DE LA RECUBIERTA MVC 
  * DONDE SE EJECUTARA TODA LA APLICACION
  *                     
  *                                                                              
- * @version: 1.0                                                                                                                    
+ *                                                                                                                 
  * @autor: ENYREBER FRANCO                                                      
  * @email: <enyerverfranco@gmail.com> , <enyerverfranco@outlook.com>  
  * @copyright © 2015, Enyerber Franco, Todos Los Derechos Reservados 
