@@ -65,5 +65,5 @@ Entre otras caracteristicas que aun falta mostrar en este proyecto base...
 Solo tienes que descargar el proyecto o hacer un clone desde github y colocarlo en un directorio de tu servidor local luego ejecutar con tu navegador 
 preferido 
 
-### TE INVITO A PROBAR EL FRAMEWORK Y SI ES POSIBLE COLABORRAR CON EL DESARROLLO DEL MISMO Y ASI HACER CRECER ESTE PROYECTO 
+### TE INVITO A PROBAR EL FRAMEWORK Y SI ES POSIBLE COLABORAR CON EL DESARROLLO DEL MISMO Y ASI HACER CRECER ESTE PROYECTO 
 Puedes enviarme sugenerncias y recomendaciones a enyerverfranco@gmail.com 
