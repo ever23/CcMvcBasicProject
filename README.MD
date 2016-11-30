@@ -10,9 +10,9 @@ en directorio [/protected](https://github.com/ever23/CcMvcBasicProject/protected
 
 En este proyecto se encuentran ejemplos de view y layauts en difrenetes formatos 
 esto para demostrar que CcMvc puede usar facilmente Motores de Plantillas como Smarty y Twig incluso plantillas 
-de php nativo usando la misma inteface, se pueden agregar facilmente otros motrores de plantillas usando la interface [Cc\Mvc\ViewLoaderExt](https://github.com/ever23/CcMvc/src/mvc/view/ViewLoader.php "Cc\Mvc\ViewLoaderExt")
+de php nativo usando la misma inteface, se pueden agregar facilmente otros motrores de plantillas usando la interface [Cc\Mvc\TemplateLoader](https://github.com/ever23/CcMvc/blob/master/src/mvc/Template/TemplateLoader.php "Cc\Mvc\ TemplateLoader")
 y resgitrando la clase su archivo de configuracion  del proyecto, para ver ejemplo de esto vea el archivo de 
-[configuracion por defecto](https://github.com/ever23/CcMvc/blob/master/src/mvc/config/DefaultConfig.php "CcMvc") de CcMvc en el indice ['ViewLoaders']
+[configuracion por defecto](https://github.com/ever23/CcMvc/blob/master/src/mvc/config/DefaultConfig.php "CcMvc") de CcMvc en el indice ['TemplateLoaders']
 
 El proyecto tiene una base de datos en sqlite pero perfectamente se puede cambiar a 
 MySql solo modificando en el archivo de  [configuracion](https://github.com/ever23/CcMvcProject/blob/master/blob/master/protected/configuracion.php "configuracion") en 
