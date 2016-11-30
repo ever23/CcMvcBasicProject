@@ -38,7 +38,12 @@ class Router
         $orig_path = is_null($orig_path) ? $_SERVER["DOCUMENT_ROOT"] : $orig_path;
 
         //$path = is_null($path) ? $this->RequestFilename : $path;
-
+        if (($p = realpath($orig_path)) !== false)
+        {
+            $orig_path = $p;
+        }
+        if ($path[0] != '/')
+            $path = '/' . $path;
         $this->InfoFile = NULL;
         $this->InfoFile = new \SplFileInfo(str_replace("/", DIRECTORY_SEPARATOR, $orig_path . $path));
 

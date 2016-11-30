@@ -23,14 +23,16 @@ namespace Cc\Mvc\Twig;
 
 use Cc\Mvc;
 use Twig_Environment;
-use Cc\Mvc\ViewLoaderExt;
+use Cc\Mvc\TemplateLoader;
 
 /**
- *  Adaptador ViewLoader para cargar templetes Twig 
+ *  Adaptador TemplateLoader para cargar templetes Twig 
  *
  * @author Enyerber Franco
+ * @package CcMvc
+ * @subpackage Adapters
  */
-class ViewLoader implements ViewLoaderExt
+class TemplateLoader implements TemplateLoader
 {
 
     /**
@@ -128,7 +130,7 @@ class ViewLoader implements ViewLoaderExt
      * @param array $agrs
      * @return string
      * @throws \Twig_Error_Loader
-     * @see ViewLoaderExt::Fetch()
+     * @see TemplateLoader::Fetch()
      */
     public function Fetch(&$context, $file, array $agrs)
     {
@@ -151,7 +153,7 @@ class ViewLoader implements ViewLoaderExt
      * @param array $agrs
      * @return mixes
      * @throws \Twig_Error_Loader
-     * @see ViewLoaderExt::Load()
+     * @see TemplateLoader::Load()
      */
     public function Load(&$context, $file, array $agrs)
     {

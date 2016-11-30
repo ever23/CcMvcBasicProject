@@ -26,11 +26,13 @@ use Cc\Autoload;
 use Cc\Cache;
 
 /**
- * Adaptador ViewLoader para cargar templetes smarty 
+ * Adaptador TemplateLoad para cargar templetes smarty 
  *
  * @author Enyerber Franco
+ * @package CcMvc
+ * @subpackage Adapters
  */
-class ViewSmartyTpl implements ViewLoaderExt
+class TemplateSmarty implements TemplateLoader
 {
 
     /**
@@ -93,7 +95,7 @@ class ViewSmartyTpl implements ViewLoaderExt
      * @return string
      * @throws \SmartyCompilerException
      * @throws Exception
-     * @see ViewLoaderExt::Fetch()
+     * @see TemplateLoader::Fetch()
      */
     public function Fetch(&$context, $file, array $agrs)
     {
@@ -122,7 +124,7 @@ class ViewSmartyTpl implements ViewLoaderExt
      * @param array $agrs
      * @return mixes
      * @throws \SmartyCompilerException
-     * @see ViewLoaderExt::Load()
+     * @see TemplateLoader::Load()
      */
     public function Load(&$context, $file, array $agrs)
     {
@@ -373,7 +375,9 @@ class ViewSmartyTpl implements ViewLoaderExt
 
 /**
  * interface para definir como smarty debe tratar el objeto que la implemente  
- *  @author Enyerber Franco
+ * @author Enyerber Franco
+ * @package CcMvc
+ * @subpackage Adapters
  */
 interface ParseObjectSmartyTpl extends iProtected
 {

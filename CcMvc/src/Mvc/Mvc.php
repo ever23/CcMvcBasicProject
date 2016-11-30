@@ -327,7 +327,8 @@ class Mvc
             {
                 $conf['DocumentRoot'].='/';
             }
-
+            if ($conf['DocumentRoot'][0] != '/')
+                $conf['DocumentRoot'] = '/' . $conf['DocumentRoot'];
             $this->conf['Router'] = $conf;
         }
         if (!file_exists(realpath('.') . '/.htaccess'))
@@ -866,8 +867,6 @@ class Mvc
     private function RouteControllerCache($cache)
     {
         $this->page = $cache['Controller'];
-
-
         if ($this->Content_type == '*/*')
         {
             $this->Content_type = 'text/html';
@@ -1391,7 +1390,7 @@ class Mvc
             $this->Response = NULL;
             $this->ContentTypeOrig = $conten_type;
             $this->Content_type = $conten_type;
-
+            header('Content-type: ' . $conten_type);
             $this->IntanceResponseConten();
             return true;
         }
@@ -1421,8 +1420,9 @@ class Mvc
     {
         $this->Log("Conectando con la base de datos ...");
         $conf = self::Config();
+        $NULL = NULL;
         if (empty($conf['DB']['class']))
-            return $conf['DB'];
+            return $NULL;
 
         $p = $conf['DB']['param'];
         foreach ($param as $i => $v)

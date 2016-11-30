@@ -46,6 +46,7 @@ class Json extends \Cc\Json implements ResponseConten
         if (is_bool($compress))
         {
             Mvc::App()->Buffer->SetCompres($compress);
+            Mvc::App()->Buffer->SetAutoMin(false);
             parent::__construct();
         } else
         {
@@ -64,7 +65,7 @@ class Json extends \Cc\Json implements ResponseConten
         if ($string != "")
             $this->Set($this->textJsonBuffer, $string);
 
-        return $this;
+        return $this->Encode(Mvc::App()->IsDebung() ? JSON_PRETTY_PRINT : NULL);
     }
 
     /**

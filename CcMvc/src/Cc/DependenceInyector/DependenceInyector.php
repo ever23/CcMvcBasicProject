@@ -269,15 +269,19 @@ class DependenceInyector
         } elseif ($class->implementsInterface(Inyectable::class))
         {
             $clase = $class->name;
+
             try
             {
+
+                $ParamName = $param->name;
+                $GLOBALS['ParamName'] = $ParamName;
                 $p = $clase::CtorParam();
                 if ($p instanceof $class->name)
                 {
                     return $p;
                 }
 
-                return new $clase(...$this->RemplaceParam($p, $param->name));
+                return new $clase(...$this->RemplaceParam($p, $ParamName));
             } catch (\Exception $ex)
             {
                 throw new InyectorException($ex->getMessage(), $ex->getCode(), $ex);

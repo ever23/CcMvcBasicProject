@@ -278,25 +278,25 @@ return
              * Configuraciones para los views y layauts en general 
              * estableciendo la clase que se encargara de evalualos segun la extencion de archivo
              */
-            'ViewLoaders' => [
+            'TemplateLoaders' => [
                 'Default' =>
                 [
-                    'class' => '\\Cc\\Mvc\\ViewPHP',
+                    'class' => '\\Cc\\Mvc\\TemplatePHP',
                     'param' => [],
                     'ext' => 'php'
                 ],
                 "Loaders" =>
                 [
                     'tpl' => [
-                        'class' => '\\Cc\\Mvc\\ViewSmartyTpl',
+                        'class' => '\\Cc\\Mvc\\TemplateSmarty',
                         'param' => [],
                     ],
                     'php' => [
-                        'class' => '\\Cc\\Mvc\\ViewPHP',
+                        'class' => '\\Cc\\Mvc\\TemplatePHP',
                         'param' => [],
                     ],
                     'twig' => [
-                        'class' => '\\Cc\\Mvc\\Twig\\ViewLoader',
+                        'class' => '\\Cc\\Mvc\\Twig\\TemplateLoader',
                         'param' => [],
                     ]
                 ]

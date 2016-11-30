@@ -31,7 +31,7 @@ use Cc\Mvc;
  * NESESITA DE LA LIBRERIA DomPDF LA CUAL NO ESTA INCLUIDA EN EL FRAMEWORK
  * @author ENYREBER FRANCO  <enyerverfranco@gmail.com> , <enyerverfranco@outlook.com>  
  * @package CcMvc
- * @subpackage Response
+ * @subpackage Adapters
  */
 class HtmlPDF extends Html
 {
@@ -269,13 +269,13 @@ class HtmlPDF extends Html
 
 
                 DocumentBuffer::Clear();
-                $loader = new ViewLoader(Mvc::App()->Config());
+                $loader = new TemplateLoad(Mvc::App()->Config());
                 $content = $loader->Fetch($this, $name, $param);
                 Mvc::App()->Log("LAYAUT " . $name . " CARGADO  ...");
             } catch (LayautException $ex)
             {
                 throw $ex;
-            } catch (ViewException $ex)
+            } catch (TemplateException $ex)
             {
                 throw new LayautException("EL LAYAUT " . $name . " NO EXISTE ");
             } catch (Exception $ex)

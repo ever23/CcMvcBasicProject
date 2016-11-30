@@ -9,11 +9,13 @@
 namespace Cc\Mvc;
 
 /**
- * Description of FileEvaluator
+ * 
  *
- * @author usuario
+ * @author Enyerber Franco
+ * @package CcMvc  
+ * @subpackage Template
  */
-class ViewLoader
+class TemplateLoad
 {
 
     protected $Config;
@@ -23,10 +25,10 @@ class ViewLoader
     public function __construct(Config $c)
     {
         $this->Config = $c;
-        if (isset($c['ViewLoaders']))
+        if (isset($c['TemplateLoaders']))
         {
-            $this->evaluadores = $c['ViewLoaders']['Loaders'];
-            $this->DefaultLoader = $c['ViewLoaders']['Default'];
+            $this->evaluadores = $c['TemplateLoaders']['Loaders'];
+            $this->DefaultLoader = $c['TemplateLoaders']['Default'];
         }
     }
 
@@ -41,7 +43,7 @@ class ViewLoader
         {
             $splfile = new \SplFileInfo($file . '.' . $this->DefaultLoader['ext']);
             if (!$splfile->isFile())
-                throw new Exception("El archivo " . $file . " no existe");
+                throw new TempleteLoaderException("El archivo " . $file . " no existe");
         }
         return $this->Evaluate($context, $splfile, $agrs);
     }
@@ -57,7 +59,7 @@ class ViewLoader
         {
             $splfile = new \SplFileInfo($file . '.' . $this->DefaultLoader['ext']);
             if (!$splfile->isFile())
-                throw new ViewLoaderException("El archivo " . $file . " no existe");
+                throw new TempleteLoaderException("El archivo " . $file . " no existe");
         }
         return $this->LoadFetch($context, $splfile, $agrs);
     }
@@ -110,21 +112,32 @@ class ViewLoader
 
 }
 
-class ViewLoaderException extends Exception
+class TempleteLoaderException extends Exception
 {
     
 }
 
-interface ViewLoaderExt
+/**
+ * interface a ser implementada en las clase cargadoras de plantillas
+ * @package CcMvc  
+ * @subpackage view
+ */
+interface TemplateLoader
 {
 
     /**
-     * 
+     * cargar y retorna el contenido de una plantilla
      * @param object $context
      * @param string $file
-     * @param file $agrs
+     * @param array $agrs
      */
     public function Load(&$context, $file, array $agrs);
 
+    /**
+     * carga e imprime en el buffer el contenido de una plantilla
+     * @param object $context
+     * @param string $file
+     * @param array $agrs
+     */
     public function Fetch(&$context, $file, array $agrs);
 }

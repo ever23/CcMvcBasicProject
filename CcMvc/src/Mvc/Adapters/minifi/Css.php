@@ -25,6 +25,8 @@ namespace Cc\Mvc\Minify;
  * Adaptacion de \MatthiasMullie\Minify\CSS para el uso en el framework
  *
  * @author  Enyerber Franco
+ * @package CcMvc
+ * @subpackage Adapters
  */
 class CSS extends \MatthiasMullie\Minify\CSS
 {

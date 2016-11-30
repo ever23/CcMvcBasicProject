@@ -113,10 +113,10 @@ abstract class Controllers implements InfoController
     protected final static function &ChangeContenType($conten_type)
     {
         if (Mvc::App()->Content_type != $conten_type)
-            if (!Mvc::App()->ChangeResponseConten($conten_type))
-            {
-                header('Content-type: ' . $conten_type);
-            }
+            Mvc::App()->ChangeResponseConten($conten_type);
+
+        header('Content-type: ' . $conten_type);
+
         return Mvc::App()->Response;
     }
 

@@ -27,6 +27,8 @@ use MatthiasMullie\Minify\JS;
  *  MinScript implementando la libreria \\MatthiasMullie\\Minify
  *
  * @author Enyerber Franco
+ * @package CcMvc
+ * @subpackage Adapters
  */
 class MinScript extends \Cc\MinScript
 {

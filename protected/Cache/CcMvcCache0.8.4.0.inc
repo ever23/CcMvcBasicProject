@@ -75,15 +75,16 @@
     1 => 1482021960,
   ),
   'VersionCache' => '1.0.0.5',
-  'ModifyTime' => '2016-11-18 02:53:01',
+  'ModifyTime' => '2016-11-26 21:48:34',
   '/ccmvcproyect/src/css/styles.css' => 
   array (
     0 => 
     array (
       'type' => 'file',
       'Controller' => 'E:\\www\\CcMvcProyect\\src\\css\\styles.css',
+      'RealFile' => 'E:\\www\\CcMvcProyect\\protected\\Cache\\Mincss\\src.css.styles.css',
     ),
-    1 => 1482021971,
+    1 => 1482370953,
   ),
   '/ccmvcproyect/src/images/ccmvc-peque.png' => 
   array (
@@ -104,5 +105,65 @@
       'GDmaxW' => '1360',
     ),
     1 => 1482022039,
+  ),
+  '/ccmvcproyect/src/images/ccmvc-peque.png?GDw=50&GDh=70COOKIE1024' => 
+  array (
+    0 => 
+    array (
+      'type' => 'file',
+      'Controller' => 'E:\\www\\CcMvcProyect\\src\\images\\CcMvc-peque.png',
+      'RealFile' => 'E:\\www\\CcMvcProyect\\protected\\Cache\\ImageGD\\w50h70csrc.images.CcMvc-peque.png',
+      'GDmaxW' => '1024',
+    ),
+    1 => 1482511975,
+  ),
+  '/ccmvcproyect/src/fonts/glyphicons-halflings-regular.woff2' => 
+  array (
+    0 => 
+    array (
+      'type' => 'file',
+      'Controller' => 'E:\\www\\\\CcMvcProyect\\src\\fonts\\glyphicons-halflings-regular.woff2',
+    ),
+    1 => 1482370953,
+  ),
+  '/ccmvcproyect/favicon.ico' => 
+  array (
+    0 => 
+    array (
+      'type' => 'file',
+      'Controller' => 'E:\\www\\\\CcMvcProyect\\favicon.ico',
+    ),
+    1 => 1482370953,
+  ),
+  '/ccmvcproyect/src/images/ccmvc-peque.png?GDw=30COOKIE1024' => 
+  array (
+    0 => 
+    array (
+      'type' => 'file',
+      'Controller' => 'E:\\www\\CcMvcProyect\\src\\images\\CcMvc-peque.png',
+      'RealFile' => 'E:\\www\\CcMvcProyect\\protected\\Cache\\ImageGD\\w30h30csrc.images.CcMvc-peque.png',
+      'GDmaxW' => '1024',
+    ),
+    1 => 1482785314,
+  ),
+  '/ccmvcproyect/src/images/ccmvc-peque.png?GDw=50COOKIE1024' => 
+  array (
+    0 => 
+    array (
+      'type' => 'file',
+      'Controller' => 'E:\\www\\CcMvcProyect\\src\\images\\CcMvc-peque.png',
+      'RealFile' => 'E:\\www\\CcMvcProyect\\protected\\Cache\\ImageGD\\w50h50csrc.images.CcMvc-peque.png',
+      'GDmaxW' => '1024',
+    ),
+    1 => 1482511974,
+  ),
+  '/ccmvcproyect/src/js/jquery-3.1.0.min.js' => 
+  array (
+    0 => 
+    array (
+      'type' => 'file',
+      'Controller' => 'E:\\www\\CcMvcProyect\\src\\js\\jquery-3.1.0.min.js',
+    ),
+    1 => 1482785313,
   ),
 );?>

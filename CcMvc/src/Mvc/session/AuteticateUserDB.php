@@ -122,18 +122,28 @@ abstract class AuteticateUserDB extends Autenticate
      */
     public function IsUser($type = '*')
     {
+        $this->verifica();
         if (is_null($this->ColUserType))
         {
-            return (bool) $this->verifica();
+            if ($this->UserVerifi === NULL)
+            {
+                return (bool) $this->verifica();
+            } else
+            {
+                return (bool) $this->UserVerifi;
+            }
         }
         if ($this->offsetExists($this->ColUserType))
         {
-            if ($type == '*')
+            if ($type == '*' || $this->offsetGet($this->ColUserType) == $type)
             {
-                return true;
-            } elseif ($this->offsetGet($this->ColUserType) == $type)
-            {
-                return true;
+                if ($this->UserVerifi === NULL)
+                {
+                    return (bool) $this->verifica();
+                } else
+                {
+                    return (bool) $this->UserVerifi;
+                }
             }
         }
 
@@ -197,6 +207,7 @@ abstract class AuteticateUserDB extends Autenticate
             if (isset($columsUser[$i]))
                 $row[$i] = $columsUser[$i];
         }
+
         $this->MejorCosto();
         $this->PasswordHash->SetOptions($this->OptionHash);
         $row[$this->ColPassword] = $this->PasswordHash->CreateHash($password);
@@ -368,7 +379,7 @@ abstract class AuteticateUserDB extends Autenticate
     {
         $this->LoadDBTabla();
 
-        if ($this->offsetExists($this->ColUserName) && $this->offsetGet($this->ColPassword) && $this->offsetGet('CreadorHashClass'))
+        if ($this->offsetExists($this->ColUserName) && $this->offsetExists($this->ColPassword) && $this->offsetExists('CreadorHashClass'))
         {
 
             if ($this->DBtabla->Select($this->ColUserName . "='" . $this->offsetGet($this->ColUserName) . "' and " . $this->ColPassword . "='" . $this->offsetGet($this->ColPassword) . "'"))
@@ -379,9 +390,10 @@ abstract class AuteticateUserDB extends Autenticate
                     $usuario = $this->DBtabla->fetch();
                     $this->DBtabla->FreeResult();
                     $ath = [$this->ColUserName => $usuario[$this->ColUserName], $this->ColPassword => $usuario[$this->ColPassword], 'CreadorHashClass' => static::class] + $usuario->GetRow();
-
+                    // var_dump($usuario[$this->ColUserType]);
                     if (!is_null($this->ColUserType))
                     {
+                        // var_dump($usuario[$this->ColUserType]);
 
                         if (!$this->UserTypeAccess($usuario[$this->ColUserType]))
                         {

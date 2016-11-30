@@ -90,7 +90,7 @@ abstract class ValidDependence implements \ArrayAccess, \IteratorAggregate
      */
     const ValidArray = 0x4;
 
-    public $option = ['requiered' => true];
+    public $option = ['required' => true];
 
     /**
      * 

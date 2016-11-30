@@ -26,6 +26,7 @@ class MySQLi extends \MySQLi implements iDataBase
     public function __construct($host = NULL, $username = NULL, $passwd = NULL, $dbname = "", $port = NULL, $socket = NULL)
     {
         $this->conectar($host, $username, $passwd, $dbname, $port, $socket);
+        $this->set_charset('utf8');
         $this->SqlFormat = new SqlFormat($this);
     }
 

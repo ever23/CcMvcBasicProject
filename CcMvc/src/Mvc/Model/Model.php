@@ -65,7 +65,8 @@ abstract class Model implements \ArrayAccess, \JsonSerializable, \IteratorAggreg
 
     public function offsetExists($offset)
     {
-        return (is_array($this->_ValuesModel) || $this->_ValuesModel instanceof \ArrayAccess ) && key_exists($offset, $this->_ValuesModel);
+
+        return ((is_array($this->_ValuesModel) && key_exists($offset, $this->_ValuesModel)) || ($this->_ValuesModel instanceof \ArrayAccess && isset($this->_ValuesModel[$offset])));
     }
 
     public function offsetGet($offset)

@@ -31,7 +31,10 @@ class Router extends \Cc\Router
 
 
         $a = explode('?', $_SERVER['REQUEST_URI']);
-        $this->RequestFilename = urldecode(trim($a[0]));
+        $request = urldecode(trim($a[0]));
+        if ($request[0] != '/')
+            $request = '/' . $request;
+        $this->RequestFilename = $request;
 
         if (is_null(self::$query))
         {
@@ -100,7 +103,11 @@ class Router extends \Cc\Router
 
             case self::Path:
                 $req = $r->CreateHref($page, '/');
-
+                if (is_string($page))
+                    if (substr($page, -1) == '/')
+                    {
+                        $req.='/';
+                    }
                 $getserialise = http_build_query($get);
                 return UrlManager::BuildUrl($conf->Router['protocol'], $_SERVER['HTTP_HOST'], (is_null($ScriptName) ? $r->config['DocumentRoot'] : $ScriptName) . $req, (($getserialise == '') ? '' : '?' ) . $getserialise);
             // return (is_null($ScriptName) ? $r->config['DocumentRoot'] : $ScriptName) . $req . (($getserialise == '') ? '' : '?' ) . $getserialise;
@@ -383,6 +390,7 @@ class Router extends \Cc\Router
 
     private function Page($page, $alcance)
     {
+
         $extArray = explode('.', $page);
         $ext = NULL;
         if (count($extArray) == 2)

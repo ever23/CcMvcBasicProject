@@ -9,11 +9,13 @@
 namespace Cc\Mvc;
 
 /**
- * Description of ViewPHP
+ * cargador de plantillas php
  *
- * @author usuario
+ * @author Enyerber Franco
+ * @package CcMvc  
+ * @subpackage Template
  */
-class ViewPHP implements ViewLoaderExt
+class TemplatePHP implements TemplateLoader
 {
 
     public function Fetch(&$context, $file, array $agrs)
@@ -31,7 +33,7 @@ class ViewPHP implements ViewLoaderExt
         {
             $file = new \SplFileInfo(substr($file, $t + 1));
             if (!$file->isFile())
-                throw new ViewLoaderException("El archivo " . $file->__toString() . " no existe");
+                throw new TempleteLoaderException("El archivo " . $file->__toString() . " no existe");
         }
 
         $function = \Closure::bind(function($__agrs, $__file)

@@ -174,6 +174,10 @@ class Html extends Response
         $this->errores = '';
         $this->AppConfig = Mvc::App()->Config();
         $this->ROOT_HTML = $this->AppConfig['Router']['DocumentRoot'];
+        if ($this->ROOT_HTML[0] != '/')
+        {
+            $this->ROOT_HTML = '/' . $this->ROOT_HTML;
+        }
         $this->titulo = &Mvc::App()->Name;
         $this->SetSrc("{root}", $this->ROOT_HTML);
         $this->SetSrc("{src}", 'src/');

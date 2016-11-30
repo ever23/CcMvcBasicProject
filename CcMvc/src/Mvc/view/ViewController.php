@@ -73,7 +73,7 @@ class ViewController
             if (is_dir($d) && $recursive)
             {
                 $dir+=$this->ListOfViews($dirrectory . $d . DIRECTORY_SEPARATOR, $completePath, $recursive);
-            } elseif (is_file($dirrectory . $d) && substr($d, -4, 4) == '.' . Mvc::App()->Config()->ViewLoaders['Default']['ext'])
+            } elseif (is_file($dirrectory . $d) && substr($d, -4, 4) == '.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext'])
             {
                 /* @var $completePath type */
                 if ($completePath)
@@ -148,19 +148,19 @@ class ViewController
 
         if (preg_match('/\.\.\//', $view))
         {
-            throw new ViewException("EL NOMBRE DEL VIEW " . $view . " NO ES VALIDO");
+            throw new TemplateException("EL NOMBRE DEL VIEW " . $view . " NO ES VALIDO");
         }
         if ((strpos($view, ':') !== false))
         {
             $this->_include($view);
-        } elseif (file_exists($dir . $view . '.' . Mvc::App()->Config()->ViewLoaders['Default']['ext']))
+        } elseif (file_exists($dir . $view . '.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext']))
         {
             $this->ViewVars['ViewName'] = $view;
-            $this->_include($dir . $view . '.' . Mvc::App()->Config()->ViewLoaders['Default']['ext']);
-        } elseif (is_dir($dir . $view) && file_exists($dir . $view . 'index.' . Mvc::App()->Config()->ViewLoaders['Default']['ext']))
+            $this->_include($dir . $view . '.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext']);
+        } elseif (is_dir($dir . $view) && file_exists($dir . $view . 'index.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext']))
         {
             $this->ViewVars['ViewName'] = $view . 'index';
-            $this->_include($dir . $view . 'index.' . Mvc::App()->Config()->ViewLoaders['Default']['ext']);
+            $this->_include($dir . $view . 'index.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext']);
         } else
         {
             $this->_include($dir . $view);
@@ -187,19 +187,19 @@ class ViewController
 
         if (preg_match('/\.\.\//', $view))
         {
-            throw new ViewException("EL NOMBRE DEL VIEW " . $view . " NO ES VALIDO");
+            throw new TemplateException("EL NOMBRE DEL VIEW " . $view . " NO ES VALIDO");
         }
         if ((strpos($view, ':') !== false))
         {
             return $this->_include($view, true);
-        } elseif (file_exists($dir . $view . '.' . Mvc::App()->Config()->ViewLoaders['Default']['ext']))
+        } elseif (file_exists($dir . $view . '.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext']))
         {
             $this->ViewVars['ViewName'] = $view;
-            return $this->_include($dir . $view . '.' . Mvc::App()->Config()->ViewLoaders['Default']['ext'], true);
-        } elseif (is_dir($dir . $view) && file_exists($dir . $view . 'index.' . Mvc::App()->Config()->ViewLoaders['Default']['ext']))
+            return $this->_include($dir . $view . '.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext'], true);
+        } elseif (is_dir($dir . $view) && file_exists($dir . $view . 'index.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext']))
         {
             $this->ViewVars['ViewName'] = $view . 'index';
-            return $this->_include($dir . $view . 'index.' . Mvc::App()->Config()->ViewLoaders['Default']['ext'], true);
+            return $this->_include($dir . $view . 'index.' . Mvc::App()->Config()->TemplateLoaders['Default']['ext'], true);
         } else
         {
             return $this->_include($dir . $view, true);
@@ -214,7 +214,7 @@ class ViewController
     {
         try
         {
-            $loader = new ViewLoader(Mvc::App()->Config());
+            $loader = new TemplateLoad(Mvc::App()->Config());
             if ($fetch)
             {
                 return $loader->Fetch($this, $file, $this->ViewVars);
@@ -222,9 +222,9 @@ class ViewController
             {
                 $loader->Load($this, $file, $this->ViewVars);
             }
-        } catch (ViewLoaderException $ex)
+        } catch (TemplateException $ex)
         {
-            throw new ViewException("El View " . $file . " no existe");
+            throw new TemplateException("El View " . $file . " no existe");
         }
     }
 
@@ -256,7 +256,7 @@ class ViewController
 
 }
 
-class ViewException extends Exception
+class TemplateException extends Exception
 {
     
 }

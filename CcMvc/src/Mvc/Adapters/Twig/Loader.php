@@ -25,6 +25,8 @@ namespace Cc\Mvc\Twig;
  * cargador de templetes para twig
  *
  * @author Enyerber Franco
+ * @package CcMvc
+ * @subpackage Adapters
  */
 class Loader implements \Twig_LoaderInterface
 {

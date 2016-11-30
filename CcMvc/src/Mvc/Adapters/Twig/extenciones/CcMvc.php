@@ -27,6 +27,8 @@ use Cc\Mvc;
  * extencion CcMvc para Twig
  *
  * @author Enyerber Franco
+ * @package CcMvc
+ * @subpackage Adapters
  */
 class CcMvc implements \Twig_ExtensionInterface, \Twig_Extension_GlobalsInterface
 {

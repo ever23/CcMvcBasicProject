@@ -22,7 +22,9 @@
 namespace Cc\Mvc;
 
 /**
- * controlador para los clousures 
+ * controlador para los clousures
+ * @package CcMvc
+ * @subpackage Controladores 
  */
 class ClouserController extends Controllers
 {

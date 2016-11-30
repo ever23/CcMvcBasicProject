@@ -151,7 +151,7 @@ namespace Cc\Mvc;
  * );
  *  </code></pre>
  *  </code></pre>
- * @property-read array $ViewLoaders Configuraciones para los views y layauts en general   <br><pre><code>
+ * @property-read array $TemplateLoaders Configuraciones para los views y layauts en general   <br><pre><code>
  * array(
  * 'Default'=>array    //indica el loader por defecto
  * 'Loaders'=>array    // loaders

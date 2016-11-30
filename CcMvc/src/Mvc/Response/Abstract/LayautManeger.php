@@ -92,13 +92,13 @@ class LayautManager extends Model
 
 
                 DocumentBuffer::Clear();
-                $loader = new ViewLoader(Mvc::App()->Config());
+                $loader = new TemplateLoad(Mvc::App()->Config());
                 $loader->Load($this, $__name, $param);
                 Mvc::App()->Log("LAYAUT " . $__name . " CARGADO  ...");
             } catch (LayautException $ex)
             {
                 throw $ex;
-            } catch (ViewException $ex)
+            } catch (TemplateException $ex)
             {
                 throw new LayautException("EL LAYAUT " . $__name . " NO EXISTE ");
             } catch (Exception $ex)

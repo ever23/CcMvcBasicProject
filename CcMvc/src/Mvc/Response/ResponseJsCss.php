@@ -74,7 +74,7 @@ class ResponseJsCss extends Response
         $f = dirname(Mvc::App()->GetExecutedFile()) . DIRECTORY_SEPARATOR;
         if (!is_dir($cache))
             mkdir($cache);
-        $name = preg_replace("/^(" . preg_quote($f,'/') . ")/i", "", $file->__toString());
+        $name = preg_replace("/^(" . preg_quote($f, '/') . ")/i", "", $file->__toString());
 
         $name = str_replace(DIRECTORY_SEPARATOR, '.', $name);
 

@@ -37,32 +37,82 @@ class GDResponse implements ResponseConten
 {
 
     /**
+     * @var array Imagenes soportadas
+     */
+    const ImgSoported = [
+        'image/gif',
+        'image/jpeg',
+        'image/png',
+    ];
+
+    /**
      *
      * @var Request
      */
     protected $request;
-    protected $tmp = '';
-    protected $imageSoported = [
-        'image/gif',
-        'image/jpeg',
-        'image/png',
-        'image/x-xbitmap',
-    ];
+
+    /**
+     *
+     * @var array 
+     */
     protected $RpImage = ['GDw', 'GDh', 'GDc', 'GDNoCookie', ''];
+
+    /**
+     *
+     * @var \SplFileInfo archivo en cache 
+     */
     protected $fileCache;
+
+    /**
+     *
+     * @var bool indica si se almacena cache de imagenes dinamicas
+     */
     protected $DinamicCache = false;
+
+    /**
+     *
+     * @var int tiempo de expiaracion del cache del servidor
+     */
     protected $CacheLifeTime = 3600;
+
+    /**
+     *
+     * @var int ultima modificacion de la imagen dinamica 
+     */
     protected $MTime = false;
+
+    /**
+     *
+     * @var string directorio de cache  
+     */
     protected $CacheDirectory = '';
 
     /**
      *
-     * @var  ImageGD
+     * @var  ImageGD 
      */
     public $BufferGD = NULL;
 
+    /**
+     * 
+     * @global string $ParamName nombre de paramentro
+     * @return array
+     * @throws Exception
+     */
     public static function CtorParam()
     {
+        global $ParamName;
+        if (isset(Mvc::App()->Config()->Response['ExtencionContenType'][$ParamName]) && in_array(Mvc::App()->Config()->Response['ExtencionContenType'][$ParamName], self::ImgSoported))
+        {
+            Mvc::App()->ChangeResponseConten(Mvc::App()->Config()->Response['ExtencionContenType'][$ParamName]);
+
+            return Mvc::App()->Response;
+        } else
+        {
+//Mvc::App()->Response = new static(true);
+//return Mvc::App()->Response;
+            throw new Exception("LA extencion .$ParamName no esta soportada por " . static::class);
+        }
         return [true, '{name_param}'];
     }
 
@@ -93,87 +143,98 @@ class GDResponse implements ResponseConten
         $this->request = &Mvc::App()->Request;
 
         Mvc::App()->Buffer->SetCompres($compress);
-
-        $this->tmp = Mvc::App()->Config()->App['Cache'];
     }
 
-    protected function ClearCache()
-    {
-        
-    }
-
-    public function CreateImageGd($w, $h, $ContenType)
+    /**
+     * Crea una imagen en el buffer 
+     * @param  string|int $w si es int es el ancho de la imagen que se creara, si es un binario de imagen se cargara la misma, si es el nombre de el archivo de una imagen se cargaraint $w
+     * @param int $h alto de la imagen
+     * @param string $ContenType tipo de imagen
+     */
+    public function &CreateImageGd($w = NULL, $h = NULL, $ContenType = NULL)
     {
         $this->BufferGD = new ImageGD($w, $h, $ContenType);
+        return $this->BufferGD;
     }
 
+    /**
+     * evia las cabeceras de cache para el navegador
+     * @param int $time ultima modificacion
+     * @param string $mime mime-type
+     * @param string|int $lifetime tiempo de expiracion
+     */
     public function CacheClient($time, $mime, $lifetime = '+1 day')
     {
         Router::HeadersReponseFiles($time, $mime, $lifetime);
     }
 
+    /**
+     * activa el cache para imagenes dinamicas 
+     * @param bool $is true activado y false desactivado
+     * @param string|int $lifetime tiempo de expiracion
+     * @param int $Modifytime ultima modificacion
+     */
     public function ActiveCache($is, $lifetime, $Modifytime)
     {
         $this->DinamicCache = $is && !Mvc::App()->IsDebung();
-        $this->CacheLifeTime = $lifetime;
+        if (is_string($Modifytime))
+        {
+            $this->CacheLifeTime = (new \DateTime($lifetime))->getTimestamp();
+        } else
+        {
+            $this->CacheLifeTime = $lifetime;
+        }
+
         $this->MTime = $Modifytime;
     }
 
     /**
-     * 
-     * @param string $file
-     * @throws Exception
+     * @access private
+     * @return array
      */
-    public function CreateImageGdFormFile($file)
-    {
-        if (!file_exists($file))
-        {
-            throw new Exception("el fichero " . $file . " no existe ");
-        }
-
-        $this->BufferGD = new ImageGD($file);
-    }
-
-    public function CreateImageGdFormString($string)
-    {
-        $this->BufferGD = new ImageGD($string);
-    }
-
     public function GetLayaut()
     {
 
         return ['Layaut' => NULL, 'Dir' => NULL];
     }
 
+    /**
+     * ultimo procesado de la imagen
+     * @param bynary $str
+     * @return binary
+     */
     public function ProccessConten($str)
     {
-
-        if (isset($_GET['GDw']) || isset($_GET['GDh']) || isset($_GET['GDc']) || isset($_COOKIE['GDmaxW']) || isset($_GET['GDtp']))
+        if ($str == '' && $this->BufferGD instanceof \Cc\ImageGD)
+        {
+            $str = $this->BufferGD->Output('', 'S');
+        }
+        if (in_array(Mvc::App()->Content_type, self::ImgSoported) && (isset($_GET['GDw']) || isset($_GET['GDh']) || isset($_GET['GDc']) || isset($_COOKIE['GDmaxW']) || isset($_GET['GDtp'])))
         {
 
             return $this->ResampledImage($str, isset($_GET['GDw']) ? $_GET['GDw'] : NULL, isset($_GET['GDh']) ? $_GET['GDh'] : NULL, isset($_GET['GDc']) ? $_GET['GDc'] : NULL, isset($_GET['GDtp']) ? $_GET['GDtp'] : [255, 254, 255]);
         } elseif ($this->DinamicCache)
         {
-            $this->CacheImgDinamic(NULL, NULL, NULL, NULL, $str);
+            list($ancho, $alto) = getimagesizefromstring($str);
+            return $this->CacheImgDinamic($ancho, $alto, NULL, $str);
         }
         return $str;
     }
 
-    protected function ResampledImage($image, $nuevo_ancho, $nuevo_alto, $calidad = NULL, $fondo = NULL)
+    /**
+     * redimenciona la imagen 
+     * @param binary $image
+     * @param int $nuevo_ancho
+     * @param int $nuevo_alto
+     * @param int $calidad
+     *
+     * @return bynary
+     */
+    protected function ResampledImage($image, $nuevo_ancho, $nuevo_alto, $calidad = NULL)
     {
 
-        // return $image;
-        if (is_string($fondo))
-        {
-            if ($fondo[0] == '#')
-            {
-                $fondo = substr($fondo, 1);
-            }
-            $c[0] = hexdec(substr($fondo, 0, 2));
-            $c[1] = hexdec(substr($fondo, 2, 2));
-            $c[2] = hexdec(substr($fondo, 4, 2));
-            $fondo = $c;
-        }
+// return $image;
+
         list($ancho, $alto) = getimagesizefromstring($image);
 
 
@@ -197,8 +258,8 @@ class GDResponse implements ResponseConten
         if (isset($_GET['GDNoCookie']) || !$this->AppConfig->Response['OptimizeImages'])
         {
             unset($_GET['GDNoCookie']);
-            //if (is_null($nuevo_alto) && is_null($nuevo_ancho) && is_null($calidad))
-            // return $image;
+//if (is_null($nuevo_alto) && is_null($nuevo_ancho) && is_null($calidad))
+// return $image;
         }
         if (is_null($nuevo_alto) && is_null($nuevo_ancho))
         {
@@ -214,7 +275,7 @@ class GDResponse implements ResponseConten
             $proc = ($nuevo_ancho * 100) / ($ancho);
             $nuevo_alto = ($alto * ($proc * 0.01));
             Mvc::App()->Log("GDResponse Cookie: w=" . $nuevo_ancho . " h=" . $nuevo_alto);
-            ///return $this->ResampledImage($image, $_COOKIE['GDmaxW'], $nuevo_alto)
+///return $this->ResampledImage($image, $_COOKIE['GDmaxW'], $nuevo_alto)
         }
         $nuevo_ancho = (int) ($nuevo_ancho > 2000 ? 2000 : $nuevo_ancho);
         $nuevo_alto = (int) ($nuevo_alto > 2000 ? 2000 : $nuevo_alto);
@@ -231,15 +292,15 @@ class GDResponse implements ResponseConten
         if ($alto == $nuevo_alto && $ancho == $nuevo_ancho)
         {
             if ($this->DinamicCache)
-                $this->CacheImgDinamic($nuevo_ancho, $nuevo_alto, $calidad, $fondo, $image);
+                return $this->CacheImgDinamic($nuevo_ancho, $nuevo_alto, $calidad, $image);
             return $image;
         }
 
-        //  return var_export(Mvc::App()->Router->InfoFile, true);
-        // $fondo = (int) $fondo;
+//  return var_export(Mvc::App()->Router->InfoFile, true);
+// $fondo = (int) $fondo;
         if (Mvc::App()->Router->InfoFile instanceof \SplFileInfo)
         {
-            $c = $this->CacheImg($nuevo_ancho, $nuevo_alto, $calidad, $fondo);
+            $c = $this->CacheImg($nuevo_ancho, $nuevo_alto, $calidad);
         }
 
 // return 1;
@@ -249,23 +310,23 @@ class GDResponse implements ResponseConten
 
         $IMG = new ImageGD($image);
 
-        $IMG->ColorMask($fondo);
+
 //return $IMG->LoadString($image);
         $IMG->Resize($nuevo_ancho, $nuevo_alto);
 //$IMG->ImportImgFormString('img', $image);
 //   $IMG->PrintImg('img', 0, 0, 0, 0, $nuevo_ancho, $nuevo_alto);
         switch (trim(Mvc::App()->Content_type))
         {
-            case 'image/x-xbitmap':
+//case 'image/x-xbitmap':
             case 'image/gif':
                 $out = $IMG->Output(NULL, "S");
                 break;
             case 'image/jpeg':
-                $out = $IMG->Output(NULL, "S", [is_null($calidad) ? 70 : $calidad]);
+                $out = $IMG->Output(NULL, "S", is_null($calidad) ? 100 : $calidad);
                 break;
             case 'image/png':
                 Mvc::App()->Buffer->SetCompres(false);
-                $out = $IMG->Output(NULL, "S", [is_null($calidad) ? 9 : $calidad]);
+                $out = $IMG->Output(NULL, "S", is_null($calidad) ? 9 : $calidad);
                 break;
             default :
                 $IMG->destroy();
@@ -291,27 +352,33 @@ class GDResponse implements ResponseConten
             Cache::Set(Mvc::App()->GetNameStaticCacheRouter() . $cookie, $cache);
 
 
-            $f = fopen($this->fileCache, 'w');
-            fwrite($f, $out);
-            fclose($f);
+            $out = $this->SaveFileCache($out);
             Router::HeadersReponseFiles($this->fileCache, Mvc::App()->Content_type, Mvc::App()->Config()->Router['CacheExpiresTime']);
         } elseif ($this->DinamicCache)
         {
-
-            $this->CacheImgDinamic($nuevo_ancho, $nuevo_alto, $calidad, $fondo, $out);
+            return $this->CacheImgDinamic($nuevo_ancho, $nuevo_alto, $calidad, $out);
         }
+//  header('content-type: ' . Mvc::App()->Content_type);
 
         return $out;
     }
 
-    protected function CacheImg($w, $h, $c, $f)
+    /**
+     * evia las headers de cache 
+     * @param int $w
+     * @param int $h
+     * @param int $c
+     * 
+     * @return boolean
+     */
+    protected function CacheImg($w, $h, $c)
     {
         $name = 'w' . ((int) $w) . 'h' . ((int) $h) . 'c' . $c;
-        //$name .= str_replace(, "", );
+//$name .= str_replace(, "", );
         $name .= preg_replace("/^(" . preg_quote(dirname(Mvc::App()->GetExecutedFile()) . DIRECTORY_SEPARATOR, '/') . ")/i", "", Mvc::App()->Router->InfoFile->__toString());
         $name = str_replace(DIRECTORY_SEPARATOR, '.', $name);
 
-        //$name = Mvc::App()->Router->InfoFile->getBasename(Mvc::App()->Router->InfoFile->getExtension());
+//$name = Mvc::App()->Router->InfoFile->getBasename(Mvc::App()->Router->InfoFile->getExtension());
 
         $cache = $this->CacheDirectory;
         if (!is_dir($cache))
@@ -332,10 +399,17 @@ class GDResponse implements ResponseConten
         return FALSE;
     }
 
-    public function CacheImgDinamic($w, $h, $c, $f, $out)
+    /**
+     * almacena el cache de imagenes dinamicas
+     * @param int $w
+     * @param int $h
+     * @param int $c
+     * @param binary $out
+     */
+    public function CacheImgDinamic($w, $h, $c, $out)
     {
         $name = 'w' . ((int) $w) . 'h' . ((int) $h) . 'c' . $c;
-        //$name .= str_replace(, "", );
+//$name .= str_replace(, "", );
         $name .= '.dinamic.';
 
         $name = $name . str_replace('/', '.', Mvc::App()->Request->BasePath());
@@ -352,7 +426,7 @@ class GDResponse implements ResponseConten
                 $name .='.png';
                 break;
         }
-        //$name = Mvc::App()->Router->InfoFile->getBasename(Mvc::App()->Router->InfoFile->getExtension());
+//$name = Mvc::App()->Router->InfoFile->getBasename(Mvc::App()->Router->InfoFile->getExtension());
 
         $cache = $this->CacheDirectory;
         if (!is_dir($cache))
@@ -372,14 +446,28 @@ class GDResponse implements ResponseConten
         $cache['Content-Type'] = Mvc::App()->Content_type;
         $cache['CacheClient'] = Mvc::App()->Config()->Router['CacheExpiresTime'];
         $cache['MTime'] = $this->MTime;
+        $out = $this->SaveFileCache($out);
+        Router::HeadersReponseFiles($this->MTime, Mvc::App()->Content_type, Mvc::App()->Config()->Router['CacheExpiresTime'], true);
+// Router::HeadersReponseFiles($this->fileCache, Mvc::App()->Content_type, $this->CacheLifeTime);
+        \Cc\Cache::Set(Mvc::App()->GetNameStaticCacheRouter(), $cache);
+        return $out;
+    }
+
+    private function SaveFileCache($out)
+    {
+        //$compres= new \smushit();
+        //$compres->compress($image);
         $f = fopen($this->fileCache, 'w');
         fwrite($f, $out);
         fclose($f);
-        Router::HeadersReponseFiles($this->MTime, Mvc::App()->Content_type, Mvc::App()->Config()->Router['CacheExpiresTime'], true);
-        // Router::HeadersReponseFiles($this->fileCache, Mvc::App()->Content_type, $this->CacheLifeTime);
-        \Cc\Cache::Set(Mvc::App()->GetNameStaticCacheRouter(), $cache);
+        return $out;
     }
 
+    /**
+     * @access private
+     * @param string $layaut
+     * @param string $dirLayaut
+     */
     public function SetLayaut($layaut, $dirLayaut = NULL)
     {
         
@@ -387,6 +475,9 @@ class GDResponse implements ResponseConten
 
 }
 
+/**
+ * exepciones 
+ */
 class GDexception extends Exception
 {
     

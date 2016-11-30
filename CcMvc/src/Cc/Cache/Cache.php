@@ -41,6 +41,7 @@ class Cache
      * @var Config 
      */
     protected static $Conf;
+    protected static $debung = false;
 
     /**
      * inicia el cache 
@@ -64,7 +65,7 @@ class Cache
 
             if (!self::$Conf['Cache']['debung'])
             {
-                // echo 1;
+                self::$debung = true;
                 self::$CACHE->Destruct();
             }
         }
@@ -77,7 +78,7 @@ class Cache
         $expire = $ActTime->getTimestamp();
         if (!is_dir($directory))
             return;
-        if (rand(0, 1000) == 500)
+        if (rand(0, 1000) == 500 || self::$debung)
         {
             $dir = dir($directory);
             while ($file = $dir->read())
@@ -87,8 +88,9 @@ class Cache
                     if (is_file($directory . $file))
                     {
                         $Mtime = filemtime($directory . $file);
+
                         $age = time() - $Mtime;
-                        if ($age > $expire)
+                        if ($age > $expire || self::$debung)
                             @unlink($directory . $file);
                     }else
                     {

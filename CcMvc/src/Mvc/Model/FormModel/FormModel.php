@@ -105,7 +105,7 @@ abstract class FormModel extends Model implements Inyectable, \Serializable
      */
     public function __construct($action = NULL, $method = 'POST', $protected = true, $inyected = false)
     {
-        $this->Method = $method;
+        $this->Method = $method != 'GET' && $method != 'POST' ? 'POST' : $method;
         $this->NameSubmited = 'Submited' . static::class . self::$count;
         self::$count++;
         $this->protected = $protected;
@@ -165,7 +165,8 @@ abstract class FormModel extends Model implements Inyectable, \Serializable
     {
         if (is_null($method))
         {
-            $this->Method = $method;
+            $this->Method = $method != 'GET' && $method != 'POST' ? 'POST' : $method;
+            ;
         }
         return $this;
     }
@@ -422,7 +423,7 @@ abstract class FormModel extends Model implements Inyectable, \Serializable
      */
     private function ProcessSubmit()
     {
-
+        // Mvc::App()->Response->error = 1;
         if ($this->Method == 'GET')
         {
             if (isset($_GET[$this->NameSubmited]))
@@ -436,9 +437,11 @@ abstract class FormModel extends Model implements Inyectable, \Serializable
             }
         } elseif ($this->Method == 'POST')
         {
+
             if (isset($_POST[$this->NameSubmited]))
             {
                 $this->Sumited = true;
+
                 $r = $this->ValidateValues($_POST);
             } else
             {
@@ -586,7 +589,8 @@ abstract class FormModel extends Model implements Inyectable, \Serializable
             $attrValid = [ 'pattern', 'min', 'max', 'maxlength', 'size', 'accept', 'step', 'required', 'multiple', 'title', 'placeholder', 'checked'];
             if ($valid = ValidDefault::GetOptions($this->campos[$name][self::Validate]))
             {
-
+                if ($attrs['type'] == 'file')
+                    $valid = $valid['opt_files'];
                 foreach ($valid as $i => $v)
                 {
                     if (in_array($i, $attrValid))
@@ -756,12 +760,12 @@ abstract class FormModel extends Model implements Inyectable, \Serializable
         $attrs['name'] = $this->NameSubmited;
         if ($return)
         {
-            $r = Html::input(['type' => 'hidden', 'name' => $attrs['name'], 'value' => 1]);
-            $r.= Html::button($value, $attrs);
-            return $r;
+
+
+            return Html::button($value, $attrs);
         } else
         {
-            echo Html::input(['type' => 'hidden', 'name' => $attrs['name'], 'value' => 1]);
+            //   echo Html::input(['type' => 'hidden', 'name' => $attrs['name'], 'value' => 1]);
             echo Html::button($value, $attrs);
         }
     }
@@ -772,12 +776,14 @@ abstract class FormModel extends Model implements Inyectable, \Serializable
      */
     public function EndForm($return = false)
     {
+        $r = Html::input(['type' => 'hidden', 'name' => $this->NameSubmited, 'value' => 1]);
+        $r .= Html::CloseTang('form');
         if ($return)
         {
-            return Html::CloseTang('form');
+            return $r;
         } else
         {
-            echo Html::CloseTang('form');
+            echo $r;
         }
     }
 

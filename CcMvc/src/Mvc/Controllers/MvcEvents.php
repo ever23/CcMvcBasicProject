@@ -97,22 +97,22 @@ class MvcEvents
 
     public function Error401($mensaje)
     {
-        $this->View->LoadInternalView('Error401');
+        $this->View->LoadInternalView('Error401.php');
     }
 
     public function Error403($mensaje)
     {
-        $this->View->LoadInternalView('Error403');
+        $this->View->LoadInternalView('Error403.php');
     }
 
     public function Error404($mensaje)
     {
-        $this->View->LoadInternalView('Error404');
+        $this->View->LoadInternalView('Error404.php');
     }
 
     public function Error500($mensaje)
     {
-        $this->View->LoadInternalView('Error500');
+        $this->View->LoadInternalView('Error500.php');
     }
 
 }

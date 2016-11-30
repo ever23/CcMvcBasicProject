@@ -23,6 +23,8 @@ namespace Cc\Mvc\Smarty;
 
 /**
  * interface para plugins smarty source 
+ * @package CcMvc
+ * @subpackage Adapters
  */
 interface PluginSource
 {
@@ -43,7 +45,9 @@ interface PluginSource
 }
 
 /**
- * interface para lugins smarty Function 
+ * interface para plugins smarty Function 
+ * @package CcMvc
+ * @subpackage Adapters
  */
 interface PluginFunction
 {
@@ -51,63 +55,122 @@ interface PluginFunction
     public function PluginFunction($param, \Smarty_Internal_Template $smarty);
 }
 
+/**
+ * si una clase implementa esta interface y es registrada como plugins todos sus metodos static seran registrados 
+ * como funciones smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginFunctionStaticAll
 {
     
 }
 
+/**
+ * interface para funciones de bloque smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface Pluginblock
 {
 
     public function Pluginblock($params, $content, \Smarty_Internal_Template $smarty, &$repeat);
 }
 
+/**
+ * si una clase implementa esta interface y es registrada como plugins todos sus metodos static seran registrados 
+ * como funciones de bloque smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginblockStaticAll
 {
     
 }
 
+/**
+ * interface para modificadores smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginModifier
 {
 
     public function PluginModifier($value, $params = NULL);
 }
 
+/**
+ * si una clase implementa esta interface y es registrada como plugins todos sus metodos static seran registrados 
+ * como modificadores smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginModifierStaticAll
 {
     
 }
 
+/**
+ * interface para compiladores smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginCompiler
 {
 
     public function PluginCompiler($tang, \Smarty_Internal_Template $smarty);
 }
 
+/**
+ * interface para prefiltros smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginPretfilter
 {
 
     public function PluginPrefilter($source, \Smarty_Internal_Template $smarty);
 }
 
+/**
+ * interface para postfiltros smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginPostfilter
 {
 
     public function PluginPosfilter($source, \Smarty_Internal_Template $smarty);
 }
 
+/**
+ * interface para Outputfilter smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginOutputfilter
 {
 
     public function PluginOutputfilter($out, \Smarty_Internal_Template $smarty);
 }
 
+/**
+ * interface para Insert smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginInsert
 {
 
     public function PluginInsert($params, \Smarty_Internal_Template $smarty);
 }
 
+/**
+ * si una clase implementa esta interface y es registrada como plugins todos sus metodos static seran registrados 
+ * como inserts smarty
+ * @package CcMvc
+ * @subpackage Adapters
+ */
 interface PluginInsertStaticAll
 {
     

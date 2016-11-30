@@ -102,12 +102,12 @@ class Mail extends \Cc\Mail
                         {
                             $param+=$layaut['params'];
                         }
-                        $loader = new ViewLoader(Mvc::App()->Config());
+                        $loader = new TemplateLoad(Mvc::App()->Config());
                         return $loader->Fetch($this, $__name, $param);
                     } catch (LayautException $ex)
                     {
                         throw $ex;
-                    } catch (ViewException $ex)
+                    } catch (TemplateException $ex)
                     {
                         throw new LayautException("EL LAYAUT " . $__name . " NO EXISTE ");
                     } catch (Exception $ex)

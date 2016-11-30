@@ -42,6 +42,7 @@ abstract class Autenticate extends Model
     protected $AccessUser = [];
     private $falied = NULL;
     protected $InternalSession;
+    protected $UserVerifi = NULL;
 
     /**
      * INDICA QUE LA AUTENTICACION FALLO PUEDE SER COMPARADA CON 
@@ -407,13 +408,13 @@ abstract class Autenticate extends Model
         $athu = $this->Autentica(... $this->DependenceInyector->Param());
 
 
-        $retur = true;
+        $this->UserVerifi = true;
 
         foreach (self::$param as $p)
         {
             if (!isset($athu[$p]) || $athu[$p] != $this->offsetGet($p))
             {
-                $retur = false;
+                $this->UserVerifi = false;
             } else
             {
                 unset($athu[$p]);
@@ -426,7 +427,7 @@ abstract class Autenticate extends Model
         }
 
 
-        return $retur;
+        return $this->UserVerifi;
     }
 
     public function Commit()

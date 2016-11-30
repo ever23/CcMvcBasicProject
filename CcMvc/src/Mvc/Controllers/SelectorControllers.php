@@ -286,7 +286,7 @@ class SelectorControllers
                 }
             }
         }
-
+        //var_dump($paquete);
         //error_reporting($conf['debung']['error_reporting']);
 
         if ($filename != '')
@@ -332,7 +332,7 @@ class SelectorControllers
             if (is_dir($this->DirController . $controllers))
             {
 
-                return $this->CreateController($method, $controllers, 'index', $ContexApp);
+                return $this->CreateController($method, $controllers != '' ? $controllers : NULL, 'index', $ContexApp);
             }
             Mvc::App()->LoadError(404, "EL CONTRLADOR " . $controllers . " NO EXISTE");
             exit;

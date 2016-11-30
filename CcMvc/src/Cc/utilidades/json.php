@@ -442,9 +442,9 @@ class Json implements \ArrayAccess, JsonSerializable, \IteratorAggregate
      *  RETORNA UNA CADENA DE TEXTO JSON
      * @return string 
      */
-    public function Encode($option = NULL)
+    public function Encode(...$option)
     {
-        if ($js = json_encode($this->vars, $option))
+        if ($js = json_encode($this->vars, ...$option))
         {
             return $js;
         }

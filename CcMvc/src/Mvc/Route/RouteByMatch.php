@@ -71,55 +71,53 @@ class RouteByMatch
         foreach ($this->routes as $path => $contr)
         {
             list($controller, $repl, $mathvar) = $contr;
-            $pathRegex = preg_split('/\/|\./', substr($path, 1));
+
+            $Rpath = substr($path, 1);
+            $pathRegex = preg_split('/\/|\./', $Rpath);
             $verifi = false;
             $param = [];
             $this->replace = [];
             if (count($this->PartsPath) != count($pathRegex))
             {
-
                 continue;
-            } else
+            } elseif ($this->CompileRegex($pathRegex, $controller, $mathvar))
             {
 
-                if ($this->CompileRegex($pathRegex, $controller, $mathvar))
+                $this->origRegex = $path;
+
+                if (is_callable($controller))
                 {
-                    $this->origRegex = $path;
-
-                    if (is_callable($controller))
+                    $this->isCalable = true;
+                    return $controller;
+                } else
+                {
+                    if (is_numeric($controller))
                     {
-                        $this->isCalable = false;
-                        return $controller;
-                    } else
-                    {
-                        if (is_numeric($controller))
+                        if (in_array($controller, [404, 403]))
                         {
-                            if (in_array($controller, [404, 403]))
-                            {
-                                Mvc::App()->LoadError($controller, " Via Enrutamiento manual");
-                                exit;
-                            }
+                            Mvc::App()->LoadError($controller, " Via Enrutamiento manual");
+                            exit;
                         }
-
-                        if (preg_match('/\.\{.*\}$/U', $controller))
-                        {
-
-                            $ext = (new \SplFileInfo($this->path))->getExtension();
-                            $controller = preg_replace('/\.\{.*\}$/U', '.' . $ext, $controller);
-                        }
-                        // var_dump($c);
-                        foreach ($this->replace as $r => $p2)
-                        {
-
-                            $controller = preg_replace($r, $p2, $controller);
-                            // var_dump($p2);
-                        }
-
-                        //  var_dump($c);
-                        return $controller;
                     }
-                    return false;
+
+                    if (preg_match('/\.\{.*\}$/U', $controller))
+                    {
+
+                        $ext = (new \SplFileInfo($this->path))->getExtension();
+                        $controller = preg_replace('/\.\{.*\}$/U', '.' . $ext, $controller);
+                    }
+
+                    foreach ($this->replace as $r => $p2)
+                    {
+
+                        $controller = preg_replace($r, $p2, $controller);
+                        // var_dump($p2);
+                    }
+
+
+                    return $controller;
                 }
+                return false;
             }
         }
         return false;

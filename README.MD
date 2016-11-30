@@ -21,7 +21,7 @@ el archivo [testdb.sql](https://github.com/ever23/CcMvcProject/blob/master/prote
 
 En este proyecto se explica:
 
-Enritamiento automatico y manual de controladores 
+Enrutamiento automatico y manual de controladores 
 
 Minifi automatico de javascript, styles y html
 
