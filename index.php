@@ -6,6 +6,7 @@
  * 
  */
 include ("../CcMvc/CcMvc.php");
+//include("vendor/autoload.php");
 $config = dirname(__FILE__) . "/protected/configuracion.php";
 $app = CcMvc::Start($config, "Proyecto Base");
 /**
