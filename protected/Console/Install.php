@@ -21,6 +21,7 @@ class Install extends AbstracConsole
             $this->OutLn("El directorio no existe ");
             return;
         }
+        $this->OutLn("\nIniciando instalacion de CcMvc \n");
         if ($path == '.' && preg_match('/' . preg_quote(DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bin') . '$/i', $realParh))
         {
             $realParh = realpath($realParh . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
@@ -36,6 +37,7 @@ class Install extends AbstracConsole
         }
 
         $this->CreateDirectories($realParh);
+        $this->OutLn("\nInstalacion finalizada \n");
     }
 
     private function CreateDirectories($path)
@@ -67,10 +69,17 @@ class Install extends AbstracConsole
         }
         foreach ($files as $f)
         {
-            $this->OutLn($path . DIRECTORY_SEPARATOR . $f);
-            copy($actualPath . DIRECTORY_SEPARATOR . $f, $path . DIRECTORY_SEPARATOR . $f);
-            $this->OutLn($path . DIRECTORY_SEPARATOR . $protected . DIRECTORY_SEPARATOR . $f);
-            copy($actualPath . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . $f, $path . DIRECTORY_SEPARATOR . $protected . DIRECTORY_SEPARATOR . $f);
+            if (file_exists($actualPath . DIRECTORY_SEPARATOR . $f))
+            {
+                $this->OutLn($path . DIRECTORY_SEPARATOR . $f);
+                copy($actualPath . DIRECTORY_SEPARATOR . $f, $path . DIRECTORY_SEPARATOR . $f);
+            }
+
+            if (file_exists($actualPath . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . $f))
+            {
+                $this->OutLn($path . DIRECTORY_SEPARATOR . $protected . DIRECTORY_SEPARATOR . $f);
+                copy($actualPath . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . $f, $path . DIRECTORY_SEPARATOR . $protected . DIRECTORY_SEPARATOR . $f);
+            }
         }
         $composer = new Json();
         $composer['require'] = ['ccmvc/ccmvc' => \CcMvc::Version];
@@ -78,7 +87,7 @@ class Install extends AbstracConsole
         file_put_contents($path . DIRECTORY_SEPARATOR . $public_html . DIRECTORY_SEPARATOR . 'index.php', $this->CreateIndexPHP());
         if ($this->vendorDir && !file_exists($path . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php'))
         {
-            $this->OutLn("Instalando Vendor\n");
+            $this->OutLn("\nInstalando Vendor\n");
             mkdir($path . DIRECTORY_SEPARATOR . 'vendor');
             $this->CopyDir($this->vendorDir, realpath($path . DIRECTORY_SEPARATOR . 'vendor'));
         }
@@ -89,7 +98,7 @@ class Install extends AbstracConsole
         $d = dir($dir);
         while ($f = $d->read())
         {
-            if ($f == '.' || $f == '..')
+            if ($f == '.' || $f == '..' || $f == \Cc\Autoload\FileCore)
                 continue;
             if (is_file($dir . DIRECTORY_SEPARATOR . $f) && file_exists($dir . DIRECTORY_SEPARATOR . $f))
             {
