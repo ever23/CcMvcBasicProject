@@ -98,4 +98,25 @@
 
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <h3>Ingresar
+
+            </h3>
+            <div class="form-control login" style="height: auto;">
+                <?php
+                /* @var $basicForm Cc\Mvc\BasicForm */
+                $Login->PrintForm([], [
+                    "user" => ["text" => "Usuario "],
+                    "pass" => ["text" => "Contraseña "],
+                        ], ['value' => 'Ingresar  <spam class="glyphicon  glyphicon-cloud-upload"></spam>', 'class' => 'btn btn-success']);
+                ?>
+
+
+            </div>
+        </div>
+        <div class="col-xs-6">
+
+        </div>
+    </div>
 </div>

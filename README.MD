@@ -6,7 +6,7 @@ explica las caracteristicas mas resaltantes
 se puede tomar como base para comenzar un proyecto nuevo bajo este framework
 
 En el codigo fuente se encuentra explicacion detallada del funcionamiento puedes verlo en los archivos .php que se encuentran 
-en directorio [/protected](https://github.com/ever23/CcMvcBasicProject/protected "protected") y el archivo [index.php](https://github.com/ever23/CcMvcBasicProject/index.php "index.php")
+en directorio [/protected](protected/ "protected") y el archivo [index.php](public_html/index.php "index.php")
 
 En este proyecto se encuentran ejemplos de view y layauts en difrenetes formatos 
 esto para demostrar que CcMvc puede usar facilmente Motores de Plantillas como Smarty y Twig incluso plantillas 

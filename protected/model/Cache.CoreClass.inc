@@ -1,9 +1,10 @@
 <?php
-/* Create by \Cc\Autoload 2016-11-13 17:20:27 */
+/* Create by \Cc\Autoload 2017-01-22 03:38:54 */
  return array (
   'class' => 
   array (
-    'Cc\\Mvc\\BasicForm' => 'BasicForm.php',
+    'Cc\\Mvc\\TablaModel\\test' => 'DBtablaModel\\test.php',
+    'Cc\\Mvc\\BasicForm' => 'FormModel\\BasicForm.php',
   ),
   'DIRECTORY_SEPARATOR' => '\\',
 );

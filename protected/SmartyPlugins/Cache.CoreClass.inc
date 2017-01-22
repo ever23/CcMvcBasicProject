@@ -1,5 +1,5 @@
 <?php
-/* Create by \Cc\Autoload 2016-11-17 22:31:44 */
+/* Create by \Cc\Autoload 2017-01-22 03:56:22 */
  return array (
   'class' => 
   array (

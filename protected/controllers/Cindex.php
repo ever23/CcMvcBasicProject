@@ -26,18 +26,19 @@ class Cindex extends Controllers implements ExtByController// se implementa ExtB
      * @param \Cc\Mvc\DBtabla $test objeto DBtabla asociado a la tabla test de la base de datos para esta clase en particular cuando un controlador 
      * tiene un parametro con esta clase se tomara el nombre del parametro como el nombre de la tabla que se requiere automaticamente 
      * @param \Cc\Mvc\Cookie $cookie objeto para manejar cookies 
-     * @param $view variable proveniente de get o post si no existe dicha variable se asigna el valor por defecto 
+     *
      */
-    public function index(Html $h, DBtabla $test, Cookie $cookie, $view = 'php')
+    public function index(Html $h, DBtabla $test, Cookie $cookie, Request $r)
     {
+        //  echo RouteByMatch::ResolveUrl('url', );
 
-        $basicForm = new BasicForm();
+        $basicForm = new BasicForm(); /* se crea una instancia del formulario BasicForm */
 
-        if ($basicForm->IsSubmited() && $basicForm->IsValid())
+        if ($basicForm->IsSubmited() && $basicForm->IsValid())/* se recivio y es valido */
         {
             $this->view->mensaje = 'El formulario se recibio y es valido';
-            $id = $test->AutoIncrement('id') + 1; // sqlite no acepta auto_increment  por lo que se realiza manualmente 
-            $test->Insert($id, $basicForm->unInput, $basicForm->unSelect, $basicForm->unDate); // inserta los datos en la tabla test 
+
+            $test->Insert($basicForm); // inserta los datos en la tabla test 
         }
         $this->view->basicForm = $basicForm; // envio el formulario a el view 
         if ($h instanceof HtmlPDF)// cuando el controlador es llamado por index.pdf el objeto de respuesta sera instanciado de la clase HtmlPDF
@@ -51,10 +52,10 @@ class Cindex extends Controllers implements ExtByController// se implementa ExtB
             unset($cookie['mensaje']); // eliminado la cookie del navegador  
         }
         $this->view->test = $test->Select(); // envio los datos de la base de datos al view 
+        $this->view->Login = new LoginFormModel();
 
 
-        $this->LoadView('index.' . $view); // solo para demostracion $view indica el tipo de templete que se cargara ejmplo si se llama a /?view=tpl se cargara 
-        // el view /protected/view/index.tpl y se ejecutara con el motor de platillas smarty 
+        $this->view->Load('index');
     }
 
     /**
@@ -70,8 +71,8 @@ class Cindex extends Controllers implements ExtByController// se implementa ExtB
         {
             $this->HttpError(404);
         }
-        $element = $test->fetch(); // se obtiene la primera fila del resultado 
-        $element->Delete(); // se elimina dicha fila 
+        $test->fetch()->Delete(); // se obtiene la primera fila del resultado y se elimina
+
         $cookie->mensaje = "El elemento se ha eliminado de la tabla "; // enviando una cookie al navegador incluso se pueden eviar arrays 
         $this->Redirec('index'); // se redireciona al controlador index/index
     }

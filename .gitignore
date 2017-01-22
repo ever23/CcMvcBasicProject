@@ -1,1 +1,4 @@
 /protected/Cache/
+/protected/SmartyConfig/
+/protected/SmartyPlugins/
+/protected/Console/Cache.CoreClass.inc
