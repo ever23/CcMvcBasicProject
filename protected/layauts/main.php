@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-sm-3 text-center"> <b class="pull-left"> Powered by<a href="http://ccmvc.com.ve" title="CcMvc"><img alt="CcMvc" src="src/images/CcMvc-peque.png?GDw=30"></a></b>
                 </div>
-                <div class="col-sm-6 text-center"><b >Copyright <a href="http://enyerberfranco.com.ve">Enyerber Franco</a>,  2015-2016</b></div>
+                <div class="col-sm-6 text-center"></div>
                 <div class="col-sm-3 text-center"> </div>
             </div>
         </footer>

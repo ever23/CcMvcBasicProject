@@ -1,11 +1,12 @@
 <?php
 
-/**
- * si tiene dudas sobre el codigo visite {@link  http://ccmvc.com} o contacte con <enyerverfranco@gmail.com>
- * el sitio del framework CcMvc Aun se encuentra en construccion
- * 
- */
-include ("../vendor/autoload.php");
+$vendor = "../vendor/autoload.php";
+
+include ($vendor);
+if (!class_exists("\\CcMvc"))
+{
+    trigger_error("Porfavor instala CcMvc via composer ejecutando 'composer install --prefer-dist'", E_USER_ERROR);
+}
 //include("vendor/autoload.php");
 
 $app = CcMvc::Start("../protected/", "Proyecto Base");
