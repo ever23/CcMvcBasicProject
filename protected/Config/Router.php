@@ -9,11 +9,18 @@ return [
      * Enrutamientos manuales
      */
     'Routing' => [
-    /* [
-      'uri' => '/{method}',
-      'controller' => 'index/{method}',
-      'where' => []
-      ] */
+    /**
+     *  [
+     *      'uri' => '/{method}',
+     *      'controller' => 'index/{method}',
+     *      'where' => []
+     *  ],
+     *  [
+     *      'uri' => '/catalogo/{id_producto}',
+     *      'controller' => 'catalogo/producto',
+     *      'where' => ['id_prod'=>'^(\d{1,4})$']
+     *  ],
+     */
     ],
     /**
      * PROTOCOLO EN EL QUE TRABAJARA LA APLICACION
