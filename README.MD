@@ -41,7 +41,7 @@ crea el directorio donde estara tu proyecto luego crea el archivo composer.json 
 {
 	"require":
 	{
-		"ccmvc/project":"dev-master"
+		"ccmvc/project":"0.8.5.5-dev"
 	}
 }
 ```
