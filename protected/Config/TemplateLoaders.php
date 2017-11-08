@@ -3,8 +3,8 @@
 return [
     'Default' =>
     [
-        //'ext' => 'tpl'
-        //'ext' => 'twig'
-        'ext' => 'php'
+        'ext' => 'tpl'
+    //'ext' => 'twig'
+    //'ext' => 'php'
     ],
 ];

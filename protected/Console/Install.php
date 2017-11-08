@@ -1,17 +1,44 @@
 <?php
 
+/*
+ * Copyright (C) 2017 Enyerber Franco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace Cc\Mvc\Console;
 
 use Cc\Mvc\AbstracConsole;
 use Cc\Mvc\Json;
 use Cc\Mvc;
 
+/**
+ * Crea una nueva aplicacion CcMvc 
+ * @author ENYREBER FRANCO <enyerverfranco@gmail.com> , <enyerverfranco@outlook.com>  
+ * 
+ */
 class Install extends AbstracConsole
 {
 
     protected $vendorDir = NULL;
     protected $protected = 'protected';
 
+    /**
+     * Crea una nueva aplicacion CcMvc 
+     * @param string $path directorio donde sera creada la aplicacion
+     * @return type
+     */
     public function index($path = '.')
     {
 
@@ -40,6 +67,10 @@ class Install extends AbstracConsole
         $this->OutLn("\nInstalacion finalizada \n");
     }
 
+    /**
+     * crea los directorios de la aplicacion 
+     * @param string $path directorio
+     */
     private function CreateDirectories($path)
     {
         $protected = 'protected';
@@ -93,6 +124,11 @@ class Install extends AbstracConsole
         }
     }
 
+    /**
+     * copia un directorio a otro
+     * @param string $dir
+     * @param string $dir2
+     */
     private function CopyDir($dir, $dir2)
     {
         $d = dir($dir);
@@ -113,6 +149,10 @@ class Install extends AbstracConsole
         }
     }
 
+    /**
+     * crea el codigo php del archivo index de la aplicacion 
+     * @return string
+     */
     private function CreateIndexPHP()
     {
         $code = "<?php\n"

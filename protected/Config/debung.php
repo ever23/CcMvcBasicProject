@@ -1,4 +1,4 @@
 <?php
 
-return true; // debung true
+return false; // debung true
 //return false;

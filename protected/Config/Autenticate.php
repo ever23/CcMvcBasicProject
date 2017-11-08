@@ -1,22 +1,22 @@
 <?php
 
-return [
-    'class' => NULL, //'class'=>' tu clase se autenticacion',
+return array(
+    //'class' => '',
     'param' =>
-    [
-        ['*/*/*']
-    ],
-    'SessionName' => 'CcMvc_SESS', // nombre de la cookie de session 
-    /**
-     * PARAMETRO DE LAS COOKIES DE SESSION
-     */
+    array(
+        0 =>
+        array(
+            0 => '*/*/*',
+        ),
+    ),
+    'SessionName' => 'MY_APP',
     'SessionCookie' =>
-    [
+    array(
         'path' => NULL,
         'cahe' => 'nocache,private',
         'time' => 21600,
         'dominio' => NULL,
         'httponly' => false,
-        'ReadAndClose' => false
-    ]
-];
+        'ReadAndClose' => false,
+    ),
+);
