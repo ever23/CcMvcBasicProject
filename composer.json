@@ -1,30 +1,5 @@
 {
-    "name": "ccmvc/project",
-    "type": "project",
-    "description": "Proyecto base CcMvc Framework php incluye paquete de instalacion de CcMvc ",
-    "keywords": [
-        "CcMvc",
-        "Install",
-        "Install CcMvc"
-    ],
-    "homepage": "http://ccmvc.com.ve",
-    "license": "GPL-3.0",
-    "authors": [
-        {
-            "name": "Enyerber Franco",
-            "email": "enyerverfranco@gmail.com",
-            "homepage": "http://enyerberfranco.com.ve",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "blog": "http://enyerberfranco.com.ve/proyectos/CcMvc"
-    },
     "require": {
-        "php": ">=5.6",
-        "ccmvc/ccmvc": "0.8.5.*"
-    },
-    "bin": [
-        "CcMvc"
-    ]
+        "ccmvc/ccmvc": "0.8.6.0"
+    }
 }
